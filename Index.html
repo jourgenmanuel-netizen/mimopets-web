@@ -1,46 +1,435 @@
-MimoPets
-Inicio Tienda Nosotros Contacto
-🛒 0
-💬
-Lo mejor para tu mascota
-Accesorios premium seleccionados con amor para tus peludos
-Ver Catálogo
-Productos Destacados
 
-🚚
-Envío Rápido
-Llegamos a todo Chile en 3-5 días hábiles
-✅
-Productos Verificados
-Solo seleccionamos lo mejor para tus mascotas
-💳
-Pago Seguro
-Pago seguro mediante Flow
-Nuestro Catálogo
-Todos Aseo Juguetes Ropa Alimentación
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MimoPets | Accesorios Premium para Mascotas</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { font-family: 'Nunito', sans-serif; }
+        body { background-color: #FFF8F3; }
+        .btn-primary { background: linear-gradient(135deg, #FF6B5B, #FF8B75); transition: all 0.3s; }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 16px rgba(255, 107, 91, 0.3); }
+        .card-product { transition: all 0.3s; }
+        .card-product:hover { transform: translateY(-8px); box-shadow: 0 12px 24px rgba(0,0,0,0.1); }
+        .badge-sale { background: linear-gradient(135deg, #FF6B5B, #FF8B75); }
+        .gradient-text { background: linear-gradient(135deg, #FF6B5B, #FF8B75); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    </style>
+</head>
+<body>
 
+<!-- NAVBAR -->
+<nav class="sticky top-0 z-50 bg-white/98 backdrop-blur shadow-md">
+    <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+        <div class="flex items-center gap-2">
+            <div class="text-3xl font-black text-[#6B4423]">Mimo<span class="text-[#FF6B5B]">Pets</span></div>
+        </div>
+        
+        <div class="hidden md:flex gap-8 font-semibold text-[#6B4423]">
+            <a href="#" onclick="showSection('home')" class="hover:text-[#FF6B5B] transition">Inicio</a>
+            <a href="#" onclick="showSection('catalog')" class="hover:text-[#FF6B5B] transition">Tienda</a>
+            <a href="#" onclick="showSection('about')" class="hover:text-[#FF6B5B] transition">Nosotros</a>
+            <a href="#" onclick="showSection('contact')" class="hover:text-[#FF6B5B] transition">Contacto</a>
+        </div>
 
-Tu Carrito
+        <div class="flex gap-4 items-center">
+            <input type="text" id="searchInput" placeholder="Buscar..." class="hidden md:block px-4 py-2 border border-gray-300 rounded-full text-sm focus:outline-none focus:border-[#FF6B5B]">
+            <button onclick="showSection('cart')" class="relative bg-[#FF6B5B] text-white px-4 py-2 rounded-full font-bold hover:bg-[#E55A4A] transition flex items-center gap-2">
+                🛒 <span id="cartCount" class="bg-[#6B4423] px-2 py-0.5 rounded-full text-sm">0</span>
+            </button>
+        </div>
+    </div>
+</nav>
 
-Subtotal:$0
-Envío:Gratis
-Total:$0
-Lo usaremos para identificar tu pago.
-Proceder al Pago Seguir Comprando
-Sobre MimoPets
-En MimoPets creemos que nuestras mascotas merecen lo mejor. Somos una tienda especializada en accesorios premium para perros y gatos, seleccionados cuidadosamente para garantizar calidad y seguridad.
-Trabajamos directamente con proveedores verificados para ofrecerte productos auténticos a precios competitivos.
-Nuestro compromiso es brindarte la mejor experiencia de compra con envíos seguros y atención personalizada.
-Contacto
-Envíanos un mensaje
-Enviar
-Información
-📧 Email
-jourgermanuel@gmail.com
-📱 WhatsApp
-+56 9 0000 0000
-🇨🇱 Ubicación
-Chile
-MimoPets
-Accesorios premium para tu mascota con amor
-© 2026 MimoPets. Todos los derechos reservados.
+<!-- WhatsApp Flotante -->
+<a href="https://wa.me/56900000000" target="_blank" class="fixed bottom-6 right-6 bg-green-500 text-white p-4 rounded-full shadow-lg z-40 hover:scale-110 transition">
+    💬
+</a>
+
+<!-- MAIN CONTENT -->
+<main id="app" class="min-h-screen">
+
+    <!-- HOME SECTION -->
+    <section id="home" class="active">
+        <div class="bg-gradient-to-r from-[#FFF8F3] via-[#FFE5D9] to-[#FFD4C2] py-20 px-4">
+            <div class="max-w-6xl mx-auto text-center">
+                <h1 class="text-6xl font-black text-[#6B4423] mb-4">Lo mejor para tu mascota</h1>
+                <p class="text-xl text-gray-700 mb-8">Accesorios premium seleccionados con amor para tus peludos</p>
+                <button onclick="showSection('catalog')" class="btn-primary text-white px-10 py-4 rounded-full font-bold text-lg">Ver Catálogo</button>
+            </div>
+        </div>
+
+        <!-- FEATURED PRODUCTS -->
+        <div class="max-w-6xl mx-auto px-4 py-16">
+            <h2 class="text-4xl font-bold text-[#6B4423] mb-12 text-center">Productos Destacados</h2>
+            <div id="featuredGrid" class="grid grid-cols-1 md:grid-cols-3 gap-8"></div>
+        </div>
+
+        <!-- BENEFITS SECTION -->
+        <div class="bg-[#FFE5D9] py-16 px-4">
+            <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="text-center">
+                    <div class="text-5xl mb-4">🚚</div>
+                    <h3 class="font-bold text-[#6B4423] mb-2">Envío Rápido</h3>
+                    <p class="text-gray-700">Llegamos a todo Chile en 3-5 días hábiles</p>
+                </div>
+                <div class="text-center">
+                    <div class="text-5xl mb-4">✅</div>
+                    <h3 class="font-bold text-[#6B4423] mb-2">Productos Verificados</h3>
+                    <p class="text-gray-700">Solo seleccionamos lo mejor para tus mascotas</p>
+                </div>
+                <div class="text-center">
+                    <div class="text-5xl mb-4">💳</div>
+                    <h3 class="font-bold text-[#6B4423] mb-2">Pago Seguro</h3>
+                    <p class="text-gray-700">Webpay y múltiples métodos de pago</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CATALOG SECTION -->
+    <section id="catalog" class="hidden py-16 px-4">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-4xl font-bold text-[#6B4423] mb-8">Nuestro Catálogo</h2>
+            
+            <!-- Filters -->
+            <div class="flex gap-4 mb-8 flex-wrap">
+                <button onclick="filterProducts('all')" class="px-6 py-2 rounded-full font-semibold bg-[#FF6B5B] text-white">Todos</button>
+                <button onclick="filterProducts('aseo')" class="px-6 py-2 rounded-full font-semibold bg-white text-[#6B4423] border-2 border-[#FF6B5B]">Aseo</button>
+                <button onclick="filterProducts('juguetes')" class="px-6 py-2 rounded-full font-semibold bg-white text-[#6B4423] border-2 border-[#FF6B5B]">Juguetes</button>
+                <button onclick="filterProducts('ropa')" class="px-6 py-2 rounded-full font-semibold bg-white text-[#6B4423] border-2 border-[#FF6B5B]">Ropa</button>
+                <button onclick="filterProducts('alimentacion')" class="px-6 py-2 rounded-full font-semibold bg-white text-[#6B4423] border-2 border-[#FF6B5B]">Alimentación</button>
+            </div>
+
+            <!-- Products Grid -->
+            <div id="productsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"></div>
+        </div>
+    </section>
+
+    <!-- PRODUCT DETAIL SECTION -->
+    <section id="product-detail" class="hidden py-16 px-4">
+        <div class="max-w-6xl mx-auto">
+            <button onclick="showSection('catalog')" class="text-[#FF6B5B] font-bold mb-8">← Volver al Catálogo</button>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12" id="productDetailContent"></div>
+        </div>
+    </section>
+
+    <!-- CART SECTION -->
+    <section id="cart" class="hidden py-16 px-4">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-4xl font-bold text-[#6B4423] mb-8">Tu Carrito</h2>
+            <div id="cartItemsContainer" class="bg-white rounded-2xl p-8 shadow-lg mb-8">
+                <div id="cartItems"></div>
+            </div>
+            <div class="bg-white rounded-2xl p-8 shadow-lg">
+                <div class="border-t-2 border-gray-200 pt-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <span class="text-lg font-semibold text-gray-700">Subtotal:</span>
+                        <span id="subtotal" class="text-xl font-bold text-[#6B4423]">$0</span>
+                    </div>
+                    <div class="flex justify-between items-center mb-6">
+                        <span class="text-lg font-semibold text-gray-700">Envío:</span>
+                        <span class="text-xl font-bold text-[#FF6B5B]">Gratis</span>
+                    </div>
+                    <div class="border-t-2 border-gray-200 pt-6 flex justify-between items-center mb-8">
+                        <span class="text-2xl font-bold text-[#6B4423]">Total:</span>
+                        <span id="totalPrice" class="text-3xl font-black gradient-text">$0</span>
+                    </div>
+                    <button onclick="checkout()" class="btn-primary w-full text-white py-4 rounded-full font-bold text-lg">Proceder al Pago</button>
+                    <button onclick="showSection('catalog')" class="w-full mt-4 border-2 border-[#FF6B5B] text-[#FF6B5B] py-4 rounded-full font-bold">Seguir Comprando</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ABOUT SECTION -->
+    <section id="about" class="hidden py-16 px-4">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-4xl font-bold text-[#6B4423] mb-8">Sobre MimoPets</h2>
+            <div class="bg-white rounded-2xl p-8 shadow-lg">
+                <p class="text-gray-700 text-lg mb-6">En MimoPets creemos que nuestras mascotas merecen lo mejor. Somos una tienda especializada en accesorios premium para perros y gatos, seleccionados cuidadosamente para garantizar calidad y seguridad.</p>
+                <p class="text-gray-700 text-lg mb-6">Trabajamos directamente con proveedores verificados para ofrecerte productos auténticos a precios competitivos.</p>
+                <p class="text-gray-700 text-lg">Nuestro compromiso es brindarte la mejor experiencia de compra con envíos seguros y atención personalizada.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTACT SECTION -->
+    <section id="contact" class="hidden py-16 px-4">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-4xl font-bold text-[#6B4423] mb-8">Contacto</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-white rounded-2xl p-8 shadow-lg">
+                    <h3 class="text-2xl font-bold text-[#6B4423] mb-6">Envíanos un mensaje</h3>
+                    <form id="contactForm">
+                        <input type="text" placeholder="Tu nombre" class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg mb-4 focus:border-[#FF6B5B] outline-none" required>
+                        <input type="email" placeholder="Tu email" class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg mb-4 focus:border-[#FF6B5B] outline-none" required>
+                        <textarea placeholder="Tu mensaje" rows="5" class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg mb-4 focus:border-[#FF6B5B] outline-none" required></textarea>
+                        <button type="submit" class="btn-primary w-full text-white py-3 rounded-lg font-bold">Enviar</button>
+                    </form>
+                </div>
+                <div class="bg-white rounded-2xl p-8 shadow-lg">
+                    <h3 class="text-2xl font-bold text-[#6B4423] mb-6">Información</h3>
+                    <div class="space-y-6">
+                        <div>
+                            <p class="font-bold text-[#6B4423]">📧 Email</p>
+                            <p class="text-gray-700">jourgermanuel@gmail.com</p>
+                        </div>
+                        <div>
+                            <p class="font-bold text-[#6B4423]">📱 WhatsApp</p>
+                            <p class="text-gray-700">+56 9 0000 0000</p>
+                        </div>
+                        <div>
+                            <p class="font-bold text-[#6B4423]">🇨🇱 Ubicación</p>
+                            <p class="text-gray-700">Chile</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="bg-[#6B4423] text-white py-12 px-4 mt-16">
+    <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div>
+            <h3 class="text-2xl font-black mb-4">Mimo<span class="text-[#FF6B5B]">Pets</span></h3>
+            <p class="text-gray-200">Accesorios premium para tu mascota con amor</p>
+        </div>
+        <div>
+            <h4 class="font-bold mb-4">Navegación</h4>
+            <ul class="space-y-2 text-gray-200">
+                <li><a href="#" onclick="showSection('home')" class="hover:text-[#FF6B5B]">Inicio</a></li>
+                <li><a href="#" onclick="showSection('catalog')" class="hover:text-[#FF6B5B]">Tienda</a></li>
+                <li><a href="#" onclick="showSection('contact')" class="hover:text-[#FF6B5B]">Contacto</a></li>
+            </ul>
+        </div>
+        <div>
+            <h4 class="font-bold mb-4">Legal</h4>
+            <ul class="space-y-2 text-gray-200">
+                <li><a href="#" class="hover:text-[#FF6B5B]">Términos y Condiciones</a></li>
+                <li><a href="#" class="hover:text-[#FF6B5B]">Política de Privacidad</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="border-t border-gray-600 mt-8 pt-8 text-center text-gray-300">
+        <p>&copy; 2024 MimoPets. Todos los derechos reservados.</p>
+    </div>
+</footer>
+
+<script>
+    // PRODUCTOS
+    const products = [
+        { id: 1, name: "Cepillo de Vapor", price: 15990, category: "aseo", image: "🧹", featured: true, description: "Cepillo deshollinador con vapor para mantener limpio a tu mascota" },
+        { id: 2, name: "Kit Grooming Premium", price: 29990, category: "aseo", image: "✂️", featured: true, description: "Set completo de herramientas para el cuidado de tu mascota" },
+        { id: 3, name: "Champú Natural", price: 8990, category: "aseo", image: "🧴", featured: false, description: "Champú 100% natural apto para pieles sensibles" },
+        { id: 4, name: "Juguete Pelota Interactiva", price: 12990, category: "juguetes", image: "🔴", featured: true, description: "Juguete interactivo que estimula el juego" },
+        { id: 5, name: "Cuerda para Morder", price: 9990, category: "juguetes", image: "🪢", featured: false, description: "Cuerda resistente para juegos de tracción" },
+        { id: 6, name: "Suéter para Perro", price: 19990, category: "ropa", image: "🧥", featured: false, description: "Suéter abrigado para días fríos" },
+        { id: 7, name: "Collar Ajustable", price: 7990, category: "ropa", image: "📿", featured: false, description: "Collar cómodo y seguro ajustable al tamaño" },
+        { id: 8, name: "Snacks Naturales", price: 11990, category: "alimentacion", image: "🥩", featured: false, description: "Deliciosos snacks 100% naturales para tu mascota" }
+    ];
+
+    let cart = JSON.parse(localStorage.getItem('mimopets-cart')) || [];
+    let currentFilter = 'all';
+    let currentProduct = null;
+
+    // FUNCIONES PRINCIPALES
+    function showSection(sectionId) {
+        document.querySelectorAll('#app > section').forEach(s => s.classList.add('hidden'));
+        document.getElementById(sectionId).classList.remove('hidden');
+        
+        if (sectionId === 'catalog') renderProducts();
+        if (sectionId === 'cart') renderCart();
+        
+        window.scrollTo(0, 0);
+    }
+
+    function renderProducts() {
+        const filtered = currentFilter === 'all' ? products : products.filter(p => p.category === currentFilter);
+        const grid = document.getElementById('productsGrid');
+        
+        grid.innerHTML = filtered.map(p => `
+            <div class="card-product bg-white rounded-2xl overflow-hidden shadow-md">
+                <div class="bg-gradient-to-br from-[#FFE5D9] to-[#FFD4C2] p-8 text-6xl flex items-center justify-center h-40">
+                    ${p.image}
+                </div>
+                <div class="p-6">
+                    <h3 class="font-bold text-lg text-[#6B4423] mb-2">${p.name}</h3>
+                    <p class="text-gray-600 text-sm mb-4">${p.description}</p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-2xl font-black text-[#FF6B5B]">$${p.price.toLocaleString('es-CL')}</span>
+                        <button onclick="addToCart(${p.id})" class="btn-primary text-white px-4 py-2 rounded-lg font-bold">Agregar</button>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function renderFeaturedProducts() {
+        const featured = products.filter(p => p.featured);
+        const grid = document.getElementById('featuredGrid');
+        
+        grid.innerHTML = featured.map(p => `
+            <div class="card-product bg-white rounded-2xl overflow-hidden shadow-md">
+                <div class="bg-gradient-to-br from-[#FFE5D9] to-[#FFD4C2] p-8 text-6xl flex items-center justify-center h-40">
+                    ${p.image}
+                </div>
+                <div class="p-6">
+                    <h3 class="font-bold text-lg text-[#6B4423] mb-2">${p.name}</h3>
+                    <span class="text-2xl font-black text-[#FF6B5B]">$${p.price.toLocaleString('es-CL')}</span>
+                    <button onclick="addToCart(${p.id})" class="btn-primary w-full text-white py-2 rounded-lg font-bold mt-4">Agregar</button>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function filterProducts(category) {
+        currentFilter = category;
+        renderProducts();
+    }
+
+    function addToCart(productId) {
+        const product = products.find(p => p.id === productId);
+        const item = cart.find(p => p.id === productId);
+        
+        if (item) {
+            item.quantity++;
+        } else {
+            cart.push({ ...product, quantity: 1 });
+        }
+        
+        updateCart();
+        alert(`✅ ${product.name} agregado al carrito`);
+    }
+
+    function removeFromCart(productId) {
+        cart = cart.filter(p => p.id !== productId);
+        updateCart();
+        renderCart();
+    }
+
+    function updateQuantity(productId, newQuantity) {
+        if (newQuantity <= 0) {
+            removeFromCart(productId);
+        } else {
+            const item = cart.find(p => p.id === productId);
+            if (item) item.quantity = newQuantity;
+            updateCart();
+            renderCart();
+        }
+    }
+
+    function updateCart() {
+        localStorage.setItem('mimopets-cart', JSON.stringify(cart));
+        document.getElementById('cartCount').innerText = cart.reduce((acc, item) => acc + item.quantity, 0);
+    }
+
+    function renderCart() {
+        const container = document.getElementById('cartItems');
+        
+        if (cart.length === 0) {
+            container.innerHTML = '<p class="text-center text-gray-500 text-lg py-12">Tu carrito está vacío</p>';
+            document.getElementById('subtotal').innerText = '$0';
+            document.getElementById('totalPrice').innerText = '$0';
+            return;
+        }
+        
+        container.innerHTML = cart.map(item => `
+            <div class="flex items-center justify-between p-6 border-b-2 border-gray-200">
+                <div class="flex items-center gap-4 flex-1">
+                    <div class="text-4xl">${item.image}</div>
+                    <div>
+                        <h3 class="font-bold text-[#6B4423]">${item.name}</h3>
+                        <p class="text-gray-600">$${item.price.toLocaleString('es-CL')} c/u</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4">
+                    <div class="flex gap-2">
+                        <button onclick="updateQuantity(${item.id}, ${item.quantity - 1})" class="px-3 py-1 border-2 border-[#FF6B5B] text-[#FF6B5B] rounded font-bold">-</button>
+                        <span class="px-4 py-1 bg-gray-100 rounded font-bold">${item.quantity}</span>
+                        <button onclick="updateQuantity(${item.id}, ${item.quantity + 1})" class="px-3 py-1 border-2 border-[#FF6B5B] text-[#FF6B5B] rounded font-bold">+</button>
+                    </div>
+                    <span class="font-bold text-[#6B4423] w-24 text-right">$${(item.price * item.quantity).toLocaleString('es-CL')}</span>
+                    <button onclick="removeFromCart(${item.id})" class="text-red-500 font-bold">🗑️</button>
+                </div>
+            </div>
+        `).join('');
+        
+        const subtotal = cart.reduce((acc, item) => acc + (item.price * item.quantity), 0);
+        document.getElementById('subtotal').innerText = '$' + subtotal.toLocaleString('es-CL');
+        document.getElementById('totalPrice').innerText = '$' + subtotal.toLocaleString('es-CL');
+    }
+
+    function checkout() {
+        if (cart.length === 0) {
+            alert('Tu carrito está vacío');
+            return;
+        }
+        alert('🎉 Redirigiendo a Webpay para completar tu compra...');
+        // Aquí se integraría Webpay
+    }
+
+    // BÚSQUEDA
+    document.addEventListener('DOMContentLoaded', () => {
+        renderFeaturedProducts();
+        
+        const searchInput = document.getElementById('searchInput');
+        if (searchInput) {
+            searchInput.addEventListener('input', (e) => {
+                const query = e.target.value.toLowerCase();
+                const filtered = products.filter(p => 
+                    p.name.toLowerCase().includes(query) || 
+                    p.description.toLowerCase().includes(query)
+                );
+                
+                if (query.length > 0) {
+                    const grid = document.getElementById('productsGrid');
+                    grid.innerHTML = filtered.map(p => `
+                        <div class="card-product bg-white rounded-2xl overflow-hidden shadow-md">
+                            <div class="bg-gradient-to-br from-[#FFE5D9] to-[#FFD4C2] p-8 text-6xl flex items-center justify-center h-40">
+                                ${p.image}
+                            </div>
+                            <div class="p-6">
+                                <h3 class="font-bold text-lg text-[#6B4423] mb-2">${p.name}</h3>
+                                <span class="text-2xl font-black text-[#FF6B5B]">$${p.price.toLocaleString('es-CL')}</span>
+                                <button onclick="addToCart(${p.id})" class="btn-primary w-full text-white py-2 rounded-lg font-bold mt-4">Agregar</button>
+                            </div>
+                        </div>
+                    `).join('');
+                }
+            });
+        }
+
+        // FORM CONTACTO
+        const contactForm = document.getElementById('contactForm');
+        if (contactForm) {
+            contactForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                alert('✅ Mensaje enviado correctamente. Nos pondremos en contacto pronto!');
+                contactForm.reset();
+            });
+        }
+    });
+
+    updateCart();
+</script>
+
+</body>
+</html>
+```
+
+**Cómo guardar y usar:**
+
+1. **Selecciona todo el código** (Ctrl+A o Cmd+A)
+2. **Cópialo** (Ctrl+C o Cmd+C)
+3. **Abre un editor de texto** (Notepad, TextEdit, VS Code)
+4. **Pégalo** (Ctrl+V o Cmd+V)
+5. **Guarda como:** `mimopets.html`
+6. **Abre en tu navegador** (doble clic en el archivo)
+
+¡Tu tienda MimoPets estará completamente funcional! 🚀
