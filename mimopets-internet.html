@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MimoPets | Accesorios Premium para Mascotas</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{font-family:'Nunito',sans-serif}body{background-color:#FFF8F3}
+.btn-primary{background:linear-gradient(135deg,#FF6B5B,#FF8B75);transition:all .3s}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 16px rgba(255,107,91,.3)}
+.card-product{transition:all .3s}.card-product:hover{transform:translateY(-8px);box-shadow:0 12px 24px rgba(0,0,0,.1)}
+.gradient-text{background:linear-gradient(135deg,#FF6B5B,#FF8B75);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+</style>
+</head>
+<body>
+<nav class="sticky top-0 z-50 bg-white/98 backdrop-blur shadow-md">
+<div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+<div class="text-3xl font-black text-[#6B4423]">Mimo<span class="text-[#FF6B5B]">Pets</span></div>
+<div class="hidden md:flex gap-8 font-semibold text-[#6B4423]">
+<a href="#" onclick="showSection('home');return false">Inicio</a>
+<a href="#" onclick="showSection('catalog');return false">Tienda</a>
+<a href="#" onclick="showSection('about');return false">Nosotros</a>
+<a href="#" onclick="showSection('contact');return false">Contacto</a>
+</div>
+<div class="flex gap-4 items-center">
+<input type="text" id="searchInput" placeholder="Buscar..." class="hidden md:block px-4 py-2 border border-gray-300 rounded-full text-sm">
+<button onclick="showSection('cart')" class="relative bg-[#FF6B5B] text-white px-4 py-2 rounded-full font-bold">🛒 <span id="cartCount" class="bg-[#6B4423] px-2 py-0.5 rounded-full text-sm">0</span></button>
+</div>
+</div>
+</nav>
+
+<a href="https://wa.me/56900000000" target="_blank" class="fixed bottom-6 right-6 bg-green-500 text-white p-4 rounded-full shadow-lg z-40">💬</a>
+
+<main id="app" class="min-h-screen">
+<section id="home">
+<div class="bg-gradient-to-r from-[#FFF8F3] via-[#FFE5D9] to-[#FFD4C2] py-20 px-4">
+<div class="max-w-6xl mx-auto text-center">
+<h1 class="text-6xl font-black text-[#6B4423] mb-4">Lo mejor para tu mascota</h1>
+<p class="text-xl text-gray-700 mb-8">Accesorios premium seleccionados con amor para tus peludos</p>
+<button onclick="showSection('catalog')" class="btn-primary text-white px-10 py-4 rounded-full font-bold text-lg">Ver Catálogo</button>
+</div></div>
+<div class="max-w-6xl mx-auto px-4 py-16">
+<h2 class="text-4xl font-bold text-[#6B4423] mb-12 text-center">Productos Destacados</h2>
+<div id="featuredGrid" class="grid grid-cols-1 md:grid-cols-3 gap-8"></div></div>
+<div class="bg-[#FFE5D9] py-16 px-4"><div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
+<div class="text-center"><div class="text-5xl mb-4">🚚</div><h3 class="font-bold text-[#6B4423] mb-2">Envío Rápido</h3><p class="text-gray-700">Llegamos a todo Chile en 3-5 días hábiles</p></div>
+<div class="text-center"><div class="text-5xl mb-4">✅</div><h3 class="font-bold text-[#6B4423] mb-2">Productos Verificados</h3><p class="text-gray-700">Solo seleccionamos lo mejor para tus mascotas</p></div>
+<div class="text-center"><div class="text-5xl mb-4">💳</div><h3 class="font-bold text-[#6B4423] mb-2">Pago Seguro</h3><p class="text-gray-700">Pago seguro mediante Flow</p></div>
+</div></div>
+</section>
+
+<section id="catalog" class="hidden py-16 px-4"><div class="max-w-6xl mx-auto">
+<h2 class="text-4xl font-bold text-[#6B4423] mb-8">Nuestro Catálogo</h2>
+<div class="flex gap-4 mb-8 flex-wrap">
+<button onclick="filterProducts('all')" class="px-6 py-2 rounded-full font-semibold bg-[#FF6B5B] text-white">Todos</button>
+<button onclick="filterProducts('aseo')" class="px-6 py-2 rounded-full font-semibold bg-white text-[#6B4423] border-2 border-[#FF6B5B]">Aseo</button>
+<button onclick="filterProducts('juguetes')" class="px-6 py-2 rounded-full font-semibold bg-white text-[#6B4423] border-2 border-[#FF6B5B]">Juguetes</button>
+<button onclick="filterProducts('ropa')" class="px-6 py-2 rounded-full font-semibold bg-white text-[#6B4423] border-2 border-[#FF6B5B]">Ropa</button>
+<button onclick="filterProducts('alimentacion')" class="px-6 py-2 rounded-full font-semibold bg-white text-[#6B4423] border-2 border-[#FF6B5B]">Alimentación</button>
+</div>
+<div id="productsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"></div>
+</div></section>
+
+<section id="product-detail" class="hidden py-16 px-4"><div class="max-w-6xl mx-auto"><div id="productDetailContent"></div></div></section>
+
+<section id="cart" class="hidden py-16 px-4"><div class="max-w-4xl mx-auto">
+<h2 class="text-4xl font-bold text-[#6B4423] mb-8">Tu Carrito</h2>
+<div id="cartItemsContainer" class="bg-white rounded-2xl p-8 shadow-lg mb-8"><div id="cartItems"></div></div>
+<div class="bg-white rounded-2xl p-8 shadow-lg">
+<div class="border-t-2 border-gray-200 pt-6">
+<div class="flex justify-between items-center mb-4"><span class="text-lg font-semibold text-gray-700">Subtotal:</span><span id="subtotal" class="text-xl font-bold text-[#6B4423]">$0</span></div>
+<div class="flex justify-between items-center mb-6"><span class="text-lg font-semibold text-gray-700">Envío:</span><span class="text-xl font-bold text-[#FF6B5B]">Gratis</span></div>
+<div class="border-t-2 border-gray-200 pt-6 flex justify-between items-center mb-8"><span class="text-2xl font-bold text-[#6B4423]">Total:</span><span id="totalPrice" class="text-3xl font-black gradient-text">$0</span></div>
+<div class="mb-4">
+<input type="email" id="checkoutEmail" placeholder="Tu correo electrónico" autocomplete="email"
+class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-[#FF6B5B] outline-none"
+required>
+<p class="text-sm text-gray-500 mt-2">Lo usaremos para identificar tu pago.</p>
+</div>
+<button id="checkoutButton" onclick="checkout()" class="btn-primary w-full text-white py-4 rounded-full font-bold text-lg">Proceder al Pago</button>
+<button onclick="showSection('catalog')" class="w-full mt-4 border-2 border-[#FF6B5B] text-[#FF6B5B] py-4 rounded-full font-bold">Seguir Comprando</button>
+</div></div></div></section>
+
+<section id="about" class="hidden py-16 px-4"><div class="max-w-4xl mx-auto"><h2 class="text-4xl font-bold text-[#6B4423] mb-8">Sobre MimoPets</h2><div class="bg-white rounded-2xl p-8 shadow-lg"><p class="text-gray-700 text-lg mb-6">En MimoPets creemos que nuestras mascotas merecen lo mejor. Somos una tienda especializada en accesorios premium para perros y gatos, seleccionados cuidadosamente para garantizar calidad y seguridad.</p><p class="text-gray-700 text-lg mb-6">Trabajamos directamente con proveedores verificados para ofrecerte productos auténticos a precios competitivos.</p><p class="text-gray-700 text-lg">Nuestro compromiso es brindarte la mejor experiencia de compra con envíos seguros y atención personalizada.</p></div></div></section>
+
+<section id="contact" class="hidden py-16 px-4"><div class="max-w-4xl mx-auto"><h2 class="text-4xl font-bold text-[#6B4423] mb-8">Contacto</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div class="bg-white rounded-2xl p-8 shadow-lg"><h3 class="text-2xl font-bold text-[#6B4423] mb-6">Envíanos un mensaje</h3><form id="contactForm"><input type="text" placeholder="Tu nombre" class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg mb-4" required><input type="email" placeholder="Tu email" class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg mb-4" required><textarea placeholder="Tu mensaje" rows="5" class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg mb-4" required></textarea><button type="submit" class="btn-primary w-full text-white py-3 rounded-lg font-bold">Enviar</button></form></div>
+<div class="bg-white rounded-2xl p-8 shadow-lg"><h3 class="text-2xl font-bold text-[#6B4423] mb-6">Información</h3><p class="font-bold text-[#6B4423]">📧 Email</p><p class="text-gray-700 mb-6">jourgermanuel@gmail.com</p><p class="font-bold text-[#6B4423]">📱 WhatsApp</p><p class="text-gray-700 mb-6">+56 9 0000 0000</p><p class="font-bold text-[#6B4423]">🇨🇱 Ubicación</p><p class="text-gray-700">Chile</p></div>
+</div></div></section>
+</main>
+
+<footer class="bg-[#6B4423] text-white py-12 px-4 mt-16"><div class="max-w-6xl mx-auto text-center"><h3 class="text-2xl font-black mb-4">Mimo<span class="text-[#FF6B5B]">Pets</span></h3><p class="text-gray-200">Accesorios premium para tu mascota con amor</p><p class="mt-8 text-gray-300">&copy; 2026 MimoPets. Todos los derechos reservados.</p></div></footer>
+
+<script>
+const BACKEND_URL = "https://mimopets-backend.onrender.com";
+
+const products=[
+{id:1,name:"Cepillo de Vapor",price:15990,category:"aseo",image:"🧹",featured:true,description:"Cepillo deshollinador con vapor para mantener limpio a tu mascota"},
+{id:2,name:"Kit Grooming Premium",price:29990,category:"aseo",image:"✂️",featured:true,description:"Set completo de herramientas para el cuidado de tu mascota"},
+{id:3,name:"Champú Natural",price:8990,category:"aseo",image:"🧴",featured:false,description:"Champú 100% natural apto para pieles sensibles"},
+{id:4,name:"Juguete Pelota Interactiva",price:12990,category:"juguetes",image:"🔴",featured:true,description:"Juguete interactivo que estimula el juego"},
+{id:5,name:"Cuerda para Morder",price:9990,category:"juguetes",image:"🪢",featured:false,description:"Cuerda resistente para juegos de tracción"},
+{id:6,name:"Suéter para Perro",price:19990,category:"ropa",image:"🧥",featured:false,description:"Suéter abrigado para días fríos"},
+{id:7,name:"Collar Ajustable",price:7990,category:"ropa",image:"📿",featured:false,description:"Collar cómodo y seguro ajustable al tamaño"},
+{id:8,name:"Snacks Naturales",price:11990,category:"alimentacion",image:"🥩",featured:false,description:"Deliciosos snacks 100% naturales para tu mascota"}];
+
+let cart=JSON.parse(localStorage.getItem('mimopets-cart'))||[];
+let currentFilter='all';
+
+function showSection(id){
+document.querySelectorAll('#app > section').forEach(s=>s.classList.add('hidden'));
+document.getElementById(id).classList.remove('hidden');
+if(id==='catalog')renderProducts();if(id==='cart')renderCart();window.scrollTo(0,0);
+}
+function productCard(p){return `<div class="card-product bg-white rounded-2xl overflow-hidden shadow-md"><div class="bg-gradient-to-br from-[#FFE5D9] to-[#FFD4C2] p-8 text-6xl flex items-center justify-center h-40">${p.image}</div><div class="p-6"><h3 class="font-bold text-lg text-[#6B4423] mb-2">${p.name}</h3><p class="text-gray-600 text-sm mb-4">${p.description}</p><div class="flex justify-between items-center"><span class="text-2xl font-black text-[#FF6B5B]">$${p.price.toLocaleString('es-CL')}</span><button onclick="addToCart(${p.id})" class="btn-primary text-white px-4 py-2 rounded-lg font-bold">Agregar</button></div></div></div>`}
+function renderProducts(){let f=currentFilter==='all'?products:products.filter(p=>p.category===currentFilter);document.getElementById('productsGrid').innerHTML=f.map(productCard).join('')}
+function renderFeaturedProducts(){document.getElementById('featuredGrid').innerHTML=products.filter(p=>p.featured).map(productCard).join('')}
+function filterProducts(c){currentFilter=c;renderProducts()}
+function addToCart(id){let p=products.find(x=>x.id===id),i=cart.find(x=>x.id===id);if(i)i.quantity++;else cart.push({...p,quantity:1});updateCart();alert(`✅ ${p.name} agregado al carrito`)}
+function removeFromCart(id){cart=cart.filter(p=>p.id!==id);updateCart();renderCart()}
+function updateQuantity(id,q){if(q<=0)removeFromCart(id);else{let i=cart.find(p=>p.id===id);if(i)i.quantity=q;updateCart();renderCart()}}
+function updateCart(){localStorage.setItem('mimopets-cart',JSON.stringify(cart));document.getElementById('cartCount').innerText=cart.reduce((a,i)=>a+i.quantity,0)}
+function renderCart(){
+const c=document.getElementById('cartItems');
+if(!cart.length){c.innerHTML='<p class="text-center text-gray-500 text-lg py-12">Tu carrito está vacío</p>';document.getElementById('subtotal').innerText='$0';document.getElementById('totalPrice').innerText='$0';return}
+c.innerHTML=cart.map(i=>`<div class="flex items-center justify-between p-6 border-b-2 border-gray-200"><div class="flex items-center gap-4 flex-1"><div class="text-4xl">${i.image}</div><div><h3 class="font-bold text-[#6B4423]">${i.name}</h3><p class="text-gray-600">$${i.price.toLocaleString('es-CL')} c/u</p></div></div><div class="flex items-center gap-4"><button onclick="updateQuantity(${i.id},${i.quantity-1})" class="px-3 py-1 border-2 border-[#FF6B5B] text-[#FF6B5B] rounded font-bold">-</button><span class="px-4 py-1 bg-gray-100 rounded font-bold">${i.quantity}</span><button onclick="updateQuantity(${i.id},${i.quantity+1})" class="px-3 py-1 border-2 border-[#FF6B5B] text-[#FF6B5B] rounded font-bold">+</button><span class="font-bold text-[#6B4423] w-24 text-right">$${(i.price*i.quantity).toLocaleString('es-CL')}</span><button onclick="removeFromCart(${i.id})" class="text-red-500 font-bold">🗑️</button></div></div>`).join('');
+let total=cart.reduce((a,i)=>a+i.price*i.quantity,0);document.getElementById('subtotal').innerText='$'+total.toLocaleString('es-CL');document.getElementById('totalPrice').innerText='$'+total.toLocaleString('es-CL');
+}
+
+/* Pago con Flow Sandbox mediante el backend seguro de Render */
+async function checkout(){
+if(!cart.length){alert('Tu carrito está vacío');return}
+
+const emailInput=document.getElementById('checkoutEmail');
+const button=document.getElementById('checkoutButton');
+const email=(emailInput?.value||'').trim();
+
+if(!emailInput||!emailInput.checkValidity()){
+alert('Ingresa un correo electrónico válido para continuar.');
+emailInput?.focus();
+return;
+}
+
+const total=cart.reduce((a,i)=>a+i.price*i.quantity,0);
+const subject=`MimoPets - ${cart.map(i=>`${i.name} x${i.quantity}`).join(', ')}`;
+
+button.disabled=true;
+button.innerText='Conectando con Flow...';
+
+try{
+const response=await fetch(`${BACKEND_URL}/api/flow/create-order`,{
+method:'POST',
+headers:{'Content-Type':'application/json'},
+body:JSON.stringify({email,subject,amount:total})
+});
+
+const data=await response.json();
+
+if(!response.ok||!data.checkoutUrl){
+throw new Error(data.error||'No se pudo crear el pago');
+}
+
+window.location.href=data.checkoutUrl;
+}catch(error){
+console.error('Error iniciando pago:',error);
+alert('No fue posible iniciar el pago. Intenta nuevamente.');
+button.disabled=false;
+button.innerText='Proceder al Pago';
+}
+}
+
+document.addEventListener('DOMContentLoaded',()=>{
+renderFeaturedProducts();updateCart();
+const form=document.getElementById('contactForm');if(form)form.addEventListener('submit',e=>{e.preventDefault();alert('✅ Mensaje enviado correctamente. Nos pondremos en contacto pronto!');form.reset()});
+});
+</script>
+</body>
+</html>
