@@ -106,6 +106,12 @@ const products=[
 {id:7,name:"Collar Ajustable",price:7990,category:"ropa",image:"📿",featured:false,description:"Collar cómodo y seguro ajustable al tamaño"},
 {id:8,name:"Snacks Naturales",price:11990,category:"alimentacion",image:"🥩",featured:false,description:"Deliciosos snacks 100% naturales para tu mascota"}];
 
+const _p = new URLSearchParams(window.location.search);
+if (_p.get("pago") === "ok") {
+  localStorage.removeItem("mimopets-cart");
+  history.replaceState({}, "", window.location.pathname);
+  setTimeout(() => alert("¡Pago exitoso! Gracias por comprar en MimoPets 🐾"), 300);
+}
 let cart=JSON.parse(localStorage.getItem('mimopets-cart'))||[];
 let currentFilter='all';
 
