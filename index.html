@@ -15,7 +15,7 @@
 </style>
 </head>
 <body>
-<nav class="sticky top-0 z-50 bg-white/98 backdrop-blur shadow-md">
+<nav class="sticky top-0 z-50 bg-white/95 backdrop-blur shadow-md">
 <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
 <div class="text-3xl font-black text-[#6B4423]">Mimo<span class="text-[#FF6B5B]">Pets</span></div>
 <div class="hidden md:flex gap-8 font-semibold text-[#6B4423]">
@@ -26,23 +26,33 @@
 </div>
 <div class="flex gap-4 items-center">
 <input type="text" id="searchInput" placeholder="Buscar..." class="hidden md:block px-4 py-2 border border-gray-300 rounded-full text-sm">
-<button onclick="showSection('cart')" class="relative bg-[#FF6B5B] text-white px-4 py-2 rounded-full font-bold">🛒 <span id="cartCount" class="bg-[#6B4423] px-2 py-0.5 rounded-full text-sm">0</span></button>
+<button onclick="showSection('cart')" class="relative bg-[#FF6B5B] text-white px-4 py-2 rounded-full font-bold" aria-label="Ver carrito">🛒 <span id="cartCount" class="bg-[#6B4423] px-2 py-0.5 rounded-full text-sm">0</span></button>
 </div>
+</div>
+<!-- Menú para celular -->
+<div class="md:hidden px-4 pb-3">
+<div class="flex justify-between font-semibold text-[#6B4423] text-sm mb-3">
+<a href="#" onclick="showSection('home');return false">Inicio</a>
+<a href="#" onclick="showSection('catalog');return false">Tienda</a>
+<a href="#" onclick="showSection('about');return false">Nosotros</a>
+<a href="#" onclick="showSection('contact');return false">Contacto</a>
+</div>
+<input type="text" id="searchInputMobile" placeholder="Buscar productos..." class="w-full px-4 py-2 border border-gray-300 rounded-full text-sm">
 </div>
 </nav>
 
-<a href="https://wa.me/56900000000" target="_blank" class="fixed bottom-6 right-6 bg-green-500 text-white p-4 rounded-full shadow-lg z-40">💬</a>
+<a href="https://wa.me/56966467293" target="_blank" rel="noopener noreferrer" aria-label="Escríbenos por WhatsApp" class="fixed bottom-6 right-6 bg-green-500 text-white p-4 rounded-full shadow-lg z-40">💬</a>
 
 <main id="app" class="min-h-screen">
 <section id="home">
 <div class="bg-gradient-to-r from-[#FFF8F3] via-[#FFE5D9] to-[#FFD4C2] py-20 px-4">
 <div class="max-w-6xl mx-auto text-center">
-<h1 class="text-6xl font-black text-[#6B4423] mb-4">Lo mejor para tu mascota</h1>
-<p class="text-xl text-gray-700 mb-8">Accesorios premium seleccionados con amor para tus peludos</p>
+<h1 class="text-4xl md:text-6xl font-black text-[#6B4423] mb-4">Lo mejor para tu mascota</h1>
+<p class="text-lg md:text-xl text-gray-700 mb-8">Accesorios premium seleccionados con amor para tus peludos</p>
 <button onclick="showSection('catalog')" class="btn-primary text-white px-10 py-4 rounded-full font-bold text-lg">Ver Catálogo</button>
 </div></div>
 <div class="max-w-6xl mx-auto px-4 py-16">
-<h2 class="text-4xl font-bold text-[#6B4423] mb-12 text-center">Productos Destacados</h2>
+<h2 class="text-3xl md:text-4xl font-bold text-[#6B4423] mb-12 text-center">Productos Destacados</h2>
 <div id="featuredGrid" class="grid grid-cols-1 md:grid-cols-3 gap-8"></div></div>
 <div class="bg-[#FFE5D9] py-16 px-4"><div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
 <div class="text-center"><div class="text-5xl mb-4">🚚</div><h3 class="font-bold text-[#6B4423] mb-2">Envío Rápido</h3><p class="text-gray-700">Llegamos a todo Chile en 3-5 días hábiles</p></div>
@@ -52,22 +62,20 @@
 </section>
 
 <section id="catalog" class="hidden py-16 px-4"><div class="max-w-6xl mx-auto">
-<h2 class="text-4xl font-bold text-[#6B4423] mb-8">Nuestro Catálogo</h2>
-<div class="flex gap-4 mb-8 flex-wrap">
-<button onclick="filterProducts('all')" class="px-6 py-2 rounded-full font-semibold bg-[#FF6B5B] text-white">Todos</button>
-<button onclick="filterProducts('aseo')" class="px-6 py-2 rounded-full font-semibold bg-white text-[#6B4423] border-2 border-[#FF6B5B]">Aseo</button>
-<button onclick="filterProducts('juguetes')" class="px-6 py-2 rounded-full font-semibold bg-white text-[#6B4423] border-2 border-[#FF6B5B]">Juguetes</button>
-<button onclick="filterProducts('ropa')" class="px-6 py-2 rounded-full font-semibold bg-white text-[#6B4423] border-2 border-[#FF6B5B]">Ropa</button>
-<button onclick="filterProducts('alimentacion')" class="px-6 py-2 rounded-full font-semibold bg-white text-[#6B4423] border-2 border-[#FF6B5B]">Alimentación</button>
+<h2 class="text-3xl md:text-4xl font-bold text-[#6B4423] mb-8">Nuestro Catálogo</h2>
+<div class="flex gap-3 mb-8 flex-wrap" id="filterButtons">
+<button data-filter="all" onclick="filterProducts('all')" class="filter-btn px-6 py-2 rounded-full font-semibold">Todos</button>
+<button data-filter="aseo" onclick="filterProducts('aseo')" class="filter-btn px-6 py-2 rounded-full font-semibold">Aseo</button>
+<button data-filter="juguetes" onclick="filterProducts('juguetes')" class="filter-btn px-6 py-2 rounded-full font-semibold">Juguetes</button>
+<button data-filter="ropa" onclick="filterProducts('ropa')" class="filter-btn px-6 py-2 rounded-full font-semibold">Ropa</button>
+<button data-filter="alimentacion" onclick="filterProducts('alimentacion')" class="filter-btn px-6 py-2 rounded-full font-semibold">Alimentación</button>
 </div>
 <div id="productsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"></div>
 </div></section>
 
-<section id="product-detail" class="hidden py-16 px-4"><div class="max-w-6xl mx-auto"><div id="productDetailContent"></div></div></section>
-
 <section id="cart" class="hidden py-16 px-4"><div class="max-w-4xl mx-auto">
-<h2 class="text-4xl font-bold text-[#6B4423] mb-8">Tu Carrito</h2>
-<div id="cartItemsContainer" class="bg-white rounded-2xl p-8 shadow-lg mb-8"><div id="cartItems"></div></div>
+<h2 class="text-3xl md:text-4xl font-bold text-[#6B4423] mb-8">Tu Carrito</h2>
+<div id="cartItemsContainer" class="bg-white rounded-2xl p-4 md:p-8 shadow-lg mb-8"><div id="cartItems"></div></div>
 <div class="bg-white rounded-2xl p-8 shadow-lg">
 <div class="border-t-2 border-gray-200 pt-6">
 <div class="flex justify-between items-center mb-4"><span class="text-lg font-semibold text-gray-700">Subtotal:</span><span id="subtotal" class="text-xl font-bold text-[#6B4423]">$0</span></div>
@@ -83,11 +91,11 @@ required>
 <button onclick="showSection('catalog')" class="w-full mt-4 border-2 border-[#FF6B5B] text-[#FF6B5B] py-4 rounded-full font-bold">Seguir Comprando</button>
 </div></div></div></section>
 
-<section id="about" class="hidden py-16 px-4"><div class="max-w-4xl mx-auto"><h2 class="text-4xl font-bold text-[#6B4423] mb-8">Sobre MimoPets</h2><div class="bg-white rounded-2xl p-8 shadow-lg"><p class="text-gray-700 text-lg mb-6">En MimoPets creemos que nuestras mascotas merecen lo mejor. Somos una tienda especializada en accesorios premium para perros y gatos, seleccionados cuidadosamente para garantizar calidad y seguridad.</p><p class="text-gray-700 text-lg mb-6">Trabajamos directamente con proveedores verificados para ofrecerte productos auténticos a precios competitivos.</p><p class="text-gray-700 text-lg">Nuestro compromiso es brindarte la mejor experiencia de compra con envíos seguros y atención personalizada.</p></div></div></section>
+<section id="about" class="hidden py-16 px-4"><div class="max-w-4xl mx-auto"><h2 class="text-3xl md:text-4xl font-bold text-[#6B4423] mb-8">Sobre MimoPets</h2><div class="bg-white rounded-2xl p-8 shadow-lg"><p class="text-gray-700 text-lg mb-6">En MimoPets creemos que nuestras mascotas merecen lo mejor. Somos una tienda especializada en accesorios premium para perros y gatos, seleccionados cuidadosamente para garantizar calidad y seguridad.</p><p class="text-gray-700 text-lg mb-6">Trabajamos directamente con proveedores verificados para ofrecerte productos auténticos a precios competitivos.</p><p class="text-gray-700 text-lg">Nuestro compromiso es brindarte la mejor experiencia de compra con envíos seguros y atención personalizada.</p></div></div></section>
 
-<section id="contact" class="hidden py-16 px-4"><div class="max-w-4xl mx-auto"><h2 class="text-4xl font-bold text-[#6B4423] mb-8">Contacto</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+<section id="contact" class="hidden py-16 px-4"><div class="max-w-4xl mx-auto"><h2 class="text-3xl md:text-4xl font-bold text-[#6B4423] mb-8">Contacto</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-8">
 <div class="bg-white rounded-2xl p-8 shadow-lg"><h3 class="text-2xl font-bold text-[#6B4423] mb-6">Envíanos un mensaje</h3><form id="contactForm"><input type="text" placeholder="Tu nombre" class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg mb-4" required><input type="email" placeholder="Tu email" class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg mb-4" required><textarea placeholder="Tu mensaje" rows="5" class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg mb-4" required></textarea><button type="submit" class="btn-primary w-full text-white py-3 rounded-lg font-bold">Enviar</button></form></div>
-<div class="bg-white rounded-2xl p-8 shadow-lg"><h3 class="text-2xl font-bold text-[#6B4423] mb-6">Información</h3><p class="font-bold text-[#6B4423]">📧 Email</p><p class="text-gray-700 mb-6">jourgermanuel@gmail.com</p><p class="font-bold text-[#6B4423]">📱 WhatsApp</p><p class="text-gray-700 mb-6">+56 9 0000 0000</p><p class="font-bold text-[#6B4423]">🇨🇱 Ubicación</p><p class="text-gray-700">Chile</p></div>
+<div class="bg-white rounded-2xl p-8 shadow-lg"><h3 class="text-2xl font-bold text-[#6B4423] mb-6">Información</h3><p class="font-bold text-[#6B4423]">📧 Email</p><p class="text-gray-700 mb-6">jourgermanuel@gmail.com</p><p class="font-bold text-[#6B4423]">📱 WhatsApp</p><p class="text-gray-700 mb-6"><a href="https://wa.me/56966467293" target="_blank" rel="noopener noreferrer">+56 9 6646 7293</a></p><p class="font-bold text-[#6B4423]">🇨🇱 Ubicación</p><p class="text-gray-700">Chile</p></div>
 </div></div></section>
 </main>
 
@@ -144,7 +152,7 @@ const products = [
   },
   {
     id: 4,
-    name: "Cuerda para morder",
+    name: "Juguete para morder",
     price: 9990,
     category: "juguetes",
     featured: false,
@@ -205,7 +213,7 @@ const products = [
   {
     id: 8,
     name: "Kit grooming premium",
-    price: 16990,
+    price: 19990,
     category: "aseo",
     featured: false,
     images: [
@@ -249,7 +257,7 @@ function showToast(message) {
     toast.id = "toast";
     toast.setAttribute("role", "status");
     toast.className =
-      "fixed top-4 left-1/2 -translate-x-1/2 z-50 bg-[#6B4423] " +
+      "fixed top-4 left-1/2 -translate-x-1/2 z-[60] bg-[#6B4423] " +
       "text-white px-5 py-3 rounded-full shadow-lg transition-opacity " +
       "duration-300 opacity-0 pointer-events-none";
     document.body.appendChild(toast);
@@ -349,22 +357,22 @@ function showSection(id) {
 /* ---------- Productos ---------- */
 
 function productCard(product) {
-  const imageHTML = (product.images || [])
-    .filter(Boolean)
-    .map((image, index) => `
-      <img
+  const image = (product.images || []).filter(Boolean)[0];
+
+  const imageHTML = image
+    ? `<img
         src="${encodeURI(image)}"
-        alt="${escapeHTML(product.name)} - imagen ${index + 1}"
-        class="w-full h-32 object-cover rounded-lg border border-gray-200"
+        alt="${escapeHTML(product.name)}"
+        class="absolute inset-0 w-full h-full object-cover"
         loading="lazy"
         onerror="this.style.display='none'"
-      >
-    `)
-    .join("");
+      >`
+    : "";
 
   return `
     <article class="card-product bg-white rounded-2xl shadow-md p-4">
-      <div class="grid grid-cols-2 gap-2 mb-4">
+      <div class="relative w-full h-56 mb-4 rounded-xl overflow-hidden bg-[#FFE5D9] flex items-center justify-center text-5xl">
+        🐾
         ${imageHTML}
       </div>
 
@@ -395,13 +403,21 @@ function productCard(product) {
   `;
 }
 
+function getSearchText() {
+  const desktop = document.getElementById("searchInput");
+  const mobile = document.getElementById("searchInputMobile");
+
+  return ((desktop?.value || mobile?.value || ""))
+    .toLowerCase()
+    .trim();
+}
+
 function renderProducts() {
   const container = document.getElementById("productsGrid");
 
   if (!container) return;
 
-  const searchInput = document.getElementById("searchInput");
-  const searchText = (searchInput?.value || "").toLowerCase().trim();
+  const searchText = getSearchText();
 
   let filteredProducts = [...products];
 
@@ -424,6 +440,18 @@ function renderProducts() {
         No se encontraron productos.
       </p>
     `;
+
+  updateFilterButtons();
+}
+
+function updateFilterButtons() {
+  document.querySelectorAll(".filter-btn").forEach(btn => {
+    const active = btn.dataset.filter === currentFilter;
+
+    btn.className =
+      "filter-btn px-6 py-2 rounded-full font-semibold border-2 border-[#FF6B5B] " +
+      (active ? "bg-[#FF6B5B] text-white" : "bg-white text-[#6B4423]");
+  });
 }
 
 function renderFeaturedProducts() {
@@ -442,8 +470,22 @@ function filterProducts(category) {
   renderProducts();
 }
 
-function searchProducts() {
-  renderProducts();
+function searchProducts(event) {
+  // Mantiene sincronizados los dos buscadores (PC y celular)
+  const desktop = document.getElementById("searchInput");
+  const mobile = document.getElementById("searchInputMobile");
+
+  if (event?.target === desktop && mobile) mobile.value = desktop.value;
+  if (event?.target === mobile && desktop) desktop.value = mobile.value;
+
+  // Si el cliente escribe, lo llevamos a la tienda
+  const catalog = document.getElementById("catalog");
+
+  if (catalog && catalog.classList.contains("hidden") && getSearchText()) {
+    showSection("catalog");
+  } else {
+    renderProducts();
+  }
 }
 
 function consultarProducto(productId) {
@@ -547,9 +589,9 @@ function renderCart() {
       const image = product.images?.[0] || "";
 
       return `
-        <div class="flex flex-col md:flex-row items-center justify-between gap-4 p-6 border-b-2 border-gray-200">
+        <div class="flex flex-col md:flex-row items-center justify-between gap-4 p-4 md:p-6 border-b-2 border-gray-200">
 
-          <div class="flex items-center gap-4 flex-1">
+          <div class="flex items-center gap-4 flex-1 w-full">
             <img
               src="${encodeURI(image)}"
               alt="${escapeHTML(product.name)}"
@@ -691,11 +733,13 @@ document.addEventListener("DOMContentLoaded", () => {
   updateCart();
   renderCart();
 
-  const searchInput = document.getElementById("searchInput");
+  ["searchInput", "searchInputMobile"].forEach(id => {
+    const input = document.getElementById(id);
 
-  if (searchInput) {
-    searchInput.addEventListener("input", searchProducts);
-  }
+    if (input) {
+      input.addEventListener("input", searchProducts);
+    }
+  });
 
   const contactForm = document.getElementById("contactForm");
 
