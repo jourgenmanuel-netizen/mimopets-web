@@ -2,760 +2,854 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MimoPets | Accesorios Premium para Mascotas</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>MimoPets</title>
 <style>
-*{font-family:'Nunito',sans-serif}body{background-color:#FFF8F3}
-.btn-primary{background:linear-gradient(135deg,#FF6B5B,#FF8B75);transition:all .3s}
-.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 16px rgba(255,107,91,.3)}
-.card-product{transition:all .3s}.card-product:hover{transform:translateY(-8px);box-shadow:0 12px 24px rgba(0,0,0,.1)}
-.gradient-text{background:linear-gradient(135deg,#FF6B5B,#FF8B75);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+/* Concepto: tienda cálida en crema y coral, tarjetas claras, texto marrón oscuro. Navegación por rutas con hash, sin librerías ni terceros al cargar. */
+:root{
+  --bg:#FFF8F3; --surface:#FFFFFF; --ink:#4A2F17; --muted:#6B5645; --line:#EAD8CB;
+  --brand:#FF6B5B; --accent:#C93A29; --on-accent:#FFFFFF;
+  --peach:#FFE5D9; --peach-2:#FFD4C2;
+  --focus:#1A56DB; --ok:#1F7A3D; --err:#B3261E;
+  --warn-bg:#FFF1C9; --warn-ink:#5A4100;
+  --wa-bg:#1F7A3D; --wa-ink:#FFFFFF;
+  --footer-bg:#4A2F17; --footer-ink:#FBEFE6;
+  --font:"Nunito",ui-rounded,"Segoe UI",system-ui,-apple-system,sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#1C1410; --surface:#2A1F19; --ink:#F6E9DE; --muted:#CDB8A5; --line:#4A3A30;
+    --brand:#FF7A69; --accent:#FF8A78; --on-accent:#2B120C;
+    --peach:#3A2620; --peach-2:#4A2F27;
+    --focus:#8DB4FF; --ok:#62C885; --err:#FF9A92;
+    --warn-bg:#4A3A12; --warn-ink:#FFE9A8;
+    --wa-bg:#62C885; --wa-ink:#0E2A18;
+    --footer-bg:#120C09; --footer-ink:#FBEFE6;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#1C1410; --surface:#2A1F19; --ink:#F6E9DE; --muted:#CDB8A5; --line:#4A3A30;
+  --brand:#FF7A69; --accent:#FF8A78; --on-accent:#2B120C;
+  --peach:#3A2620; --peach-2:#4A2F27;
+  --focus:#8DB4FF; --ok:#62C885; --err:#FF9A92;
+  --warn-bg:#4A3A12; --warn-ink:#FFE9A8;
+  --wa-bg:#62C885; --wa-ink:#0E2A18;
+  --footer-bg:#120C09; --footer-ink:#FBEFE6;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--font);font-size:1rem;line-height:1.6;padding-bottom:var(--banner-h,0px)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:60;background:var(--surface)}
+h1,h2,h3{line-height:1.2;text-wrap:balance;margin:0}
+p{margin:0}
+a{color:var(--accent)}
+:focus-visible{outline:3px solid var(--focus);outline-offset:3px;border-radius:4px}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.wrap{max-width:72rem;margin-inline:auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.skip{position:absolute;left:-999px;top:0;background:var(--ink);color:var(--bg);padding:.75rem 1rem;z-index:100;font-weight:800}
+.skip:focus{left:max(16px,env(safe-area-inset-left,0px));top:calc(env(safe-area-inset-top,0px) + 8px)}
+
+/* Botones */
+.btn{font:inherit;font-weight:800;display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:.6rem 1.25rem;border-radius:999px;border:2px solid transparent;cursor:pointer;text-decoration:none;text-align:center}
+.btn-primary{background:var(--accent);color:var(--on-accent)}
+.btn-outline{background:transparent;color:var(--accent);border-color:var(--accent)}
+.btn-ink{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.btn-ghost{background:transparent;color:var(--ink);text-decoration:underline;border-color:transparent}
+.btn[disabled]{opacity:.6;cursor:wait}
+.link-btn{font:inherit;background:none;border:0;padding:.5rem;color:var(--accent);text-decoration:underline;cursor:pointer;min-height:44px}
+
+/* Cabecera */
+.site-header{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;background:var(--surface);border-bottom:1px solid var(--line)}
+.header-row{display:flex;flex-wrap:wrap;align-items:center;gap:.25rem 1.5rem;padding-block:.6rem}
+.logo{order:1;font-size:1.75rem;font-weight:900;color:var(--ink);text-decoration:none}
+.logo span{color:var(--accent)}
+.cart-btn{order:2;margin-left:auto}
+.cart-btn .count{background:var(--ink);color:var(--bg);border-radius:999px;padding:0 .55rem;margin-left:.5rem;font-size:.9rem}
+.nav{order:3;display:flex;flex-wrap:wrap;gap:0 1.25rem;width:100%}
+.nav a{color:var(--ink);font-weight:700;text-decoration:none;padding:.6rem .1rem;border-bottom:3px solid transparent;min-height:44px;display:inline-flex;align-items:center}
+.nav a[aria-current="page"]{border-bottom-color:var(--brand)}
+@media (min-width:760px){.nav{order:2;width:auto;margin-inline:auto}.cart-btn{order:3;margin-left:0}}
+
+/* Secciones */
+.page{padding-block:2.5rem 3.5rem}
+.page h1{font-size:clamp(1.9rem,4.5vw,2.6rem);margin-bottom:1.5rem;outline:none}
+.hero{background:linear-gradient(135deg,var(--bg),var(--peach) 55%,var(--peach-2))}
+.hero .wrap{padding-block:4rem}
+.hero h1{font-size:clamp(2.2rem,6vw,3.6rem);font-weight:900;max-width:18ch;margin-bottom:1rem}
+.hero p{font-size:1.2rem;color:var(--muted);max-width:40ch;margin-bottom:1.75rem}
+.section-title{font-size:clamp(1.5rem,3.5vw,2rem);margin-bottom:1.5rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(15.5rem,1fr));gap:1.25rem}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;overflow:hidden;display:flex;flex-direction:column;min-width:0}
+.card .pic{background:linear-gradient(135deg,var(--peach),var(--peach-2));height:13rem;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.pic .ph{font-size:.95rem;font-weight:700;color:var(--muted);padding:1rem;text-align:center}
+.pic img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.thumb{position:relative;width:4rem;height:4rem;border-radius:10px;overflow:hidden;background:var(--peach);display:flex;align-items:center;justify-content:center;flex:none}
+.thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.actions{display:flex;flex-wrap:wrap;gap:.5rem}
+.actions .btn{flex:1 1 7rem}
+.card .body{padding:1.1rem;display:flex;flex-direction:column;gap:.5rem;flex:1}
+.card h3{font-size:1.1rem}
+.card .desc{color:var(--muted);font-size:.95rem;flex:1}
+.price{font-size:1.5rem;font-weight:900;color:var(--accent)}
+.info-band{background:var(--peach)}
+.info-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));gap:2rem;padding-block:3rem}
+.info-grid h3{font-size:1.15rem;margin-bottom:.4rem}
+.info-grid p{color:var(--muted)}
+
+/* Tienda */
+.toolbar{display:flex;flex-wrap:wrap;gap:1rem;align-items:end;margin-bottom:1.5rem}
+.field{display:flex;flex-direction:column;gap:.35rem}
+.field label,.label{font-weight:800}
+.input{font:inherit;color:var(--ink);background:var(--surface);border:2px solid var(--line);border-radius:10px;padding:.65rem .85rem;min-height:44px;width:100%}
+textarea.input{resize:vertical;min-height:8rem}
+.input[aria-invalid="true"]{border-color:var(--err)}
+.pills{display:flex;flex-wrap:wrap;gap:.5rem}
+.pill{font:inherit;font-weight:700;min-height:44px;padding:.4rem 1.1rem;border-radius:999px;border:2px solid var(--accent);background:var(--surface);color:var(--ink);cursor:pointer}
+.pill[aria-pressed="true"]{background:var(--accent);color:var(--on-accent)}
+.empty{color:var(--muted);padding:2rem 0}
+
+/* Carrito */
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:1.5rem}
+.cart-list{list-style:none;margin:0;padding:0}
+.cart-item{display:grid;grid-template-columns:auto 1fr;gap:.5rem 1rem;align-items:center;padding-block:1rem;border-bottom:1px solid var(--line)}
+.cart-item .emoji{font-size:2.2rem}
+.cart-item h3{font-size:1.05rem}
+.cart-item .sub{color:var(--muted);font-size:.95rem}
+.cart-item .ctrl{grid-column:1 / -1;display:flex;flex-wrap:wrap;align-items:center;gap:.5rem 1rem}
+.qty{display:inline-flex;align-items:center;gap:.5rem}
+.qty button{font:inherit;font-weight:900;width:44px;height:44px;border-radius:10px;border:2px solid var(--accent);background:var(--surface);color:var(--accent);cursor:pointer}
+.qty .n{min-width:2.2rem;text-align:center;font-weight:800}
+.line-total{font-weight:800;margin-left:auto}
+.totals{display:grid;gap:.5rem;margin-block:1.25rem}
+.totals div{display:flex;justify-content:space-between;gap:1rem}
+.totals .grand{border-top:2px solid var(--line);padding-top:.75rem;font-size:1.4rem;font-weight:900}
+.notice{background:var(--warn-bg);color:var(--warn-ink);border-radius:12px;padding:.9rem 1.1rem;font-weight:700}
+.notice a{color:inherit}
+.checks{display:grid;gap:.9rem;margin-block:1.25rem}
+.check{display:flex;gap:.75rem;align-items:flex-start}
+.check input{width:1.4rem;height:1.4rem;margin-top:.15rem;flex:none;accent-color:var(--accent)}
+.hint{color:var(--muted);font-size:.92rem}
+.field-err,.error{color:var(--err);font-weight:700;font-size:.95rem}
+.ok-msg{color:var(--ok);font-weight:700}
+.stack{display:grid;gap:1rem}
+
+/* Textos legales */
+.prose{max-width:46rem}
+.prose h2{font-size:1.3rem;margin:2rem 0 .6rem}
+.prose p,.prose ul,.prose ol{margin-bottom:.9rem}
+.prose ul,.prose ol{padding-left:1.4rem}
+.prose li{margin-bottom:.35rem}
+.updated{color:var(--muted);margin-bottom:1.5rem}
+.tablewrap{overflow-x:auto;margin-bottom:1.2rem;border:1px solid var(--line);border-radius:12px}
+.tablewrap table{border-collapse:collapse;width:100%;min-width:34rem;font-size:.95rem}
+.tablewrap th,.tablewrap td{text-align:left;vertical-align:top;padding:.7rem .85rem;border-bottom:1px solid var(--line)}
+.tablewrap th{background:var(--peach)}
+.pendiente{background:var(--warn-bg);color:var(--warn-ink);padding:0 .35em;border-radius:4px}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(18rem,1fr));gap:1.5rem}
+.two>*{min-width:0}
+
+/* Pie */
+.site-footer{background:var(--footer-bg);color:var(--footer-ink);margin-top:2rem}
+.site-footer .wrap{padding-block:2.5rem}
+.site-footer a,.site-footer .link-btn{color:var(--footer-ink)}
+.footer-nav{display:flex;flex-wrap:wrap;gap:.25rem 1.25rem;margin-block:1rem}
+.site-footer .small{opacity:.85;font-size:.92rem}
+
+/* Cookies */
+.consent{position:fixed;left:0;right:0;bottom:0;z-index:50;background:var(--surface);border-top:2px solid var(--line);box-shadow:0 -8px 24px rgba(0,0,0,.14);padding-bottom:env(safe-area-inset-bottom,0px);max-height:70vh;overflow-y:auto}
+.consent-inner{display:grid;gap:.75rem;padding-block:1rem}
+.consent h2{font-size:1.05rem;margin-bottom:.25rem}
+.consent p{font-size:.95rem}
+.consent-actions{display:flex;flex-wrap:wrap;gap:.6rem}
+.consent fieldset{border:1px solid var(--line);border-radius:10px;margin:0;padding:.75rem 1rem}
+.consent legend{font-weight:800;padding-inline:.3rem}
+
+/* Flotantes */
+.wa{position:fixed;right:calc(16px + env(safe-area-inset-right,0px));bottom:calc(var(--banner-h,0px) + 16px + env(safe-area-inset-bottom,0px));z-index:40;background:var(--wa-bg);color:var(--wa-ink);font-weight:800;text-decoration:none;padding:.7rem 1.1rem;border-radius:999px;min-height:44px;display:inline-flex;align-items:center;box-shadow:0 6px 18px rgba(0,0,0,.22)}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(var(--banner-h,0px) + 72px + env(safe-area-inset-bottom,0px));z-index:45;background:var(--ink);color:var(--bg);padding:.7rem 1.1rem;border-radius:12px;font-weight:700;max-width:min(92vw,28rem)}
+
+@media (prefers-reduced-motion: no-preference){
+  .card{transition:box-shadow .2s ease,transform .2s ease}
+  .card:hover{transform:translateY(-4px);box-shadow:0 10px 22px rgba(0,0,0,.1)}
+}
+[hidden]{display:none!important}
+body{margin:0}
+img{max-width:100%}
 </style>
 </head>
 <body>
-<nav class="sticky top-0 z-50 bg-white/95 backdrop-blur shadow-md">
-<div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-<div class="text-3xl font-black text-[#6B4423]">Mimo<span class="text-[#FF6B5B]">Pets</span></div>
-<div class="hidden md:flex gap-8 font-semibold text-[#6B4423]">
-<a href="#" onclick="showSection('home');return false">Inicio</a>
-<a href="#" onclick="showSection('catalog');return false">Tienda</a>
-<a href="#" onclick="showSection('about');return false">Nosotros</a>
-<a href="#" onclick="showSection('contact');return false">Contacto</a>
-</div>
-<div class="flex gap-4 items-center">
-<input type="text" id="searchInput" placeholder="Buscar..." class="hidden md:block px-4 py-2 border border-gray-300 rounded-full text-sm">
-<button onclick="showSection('cart')" class="relative bg-[#FF6B5B] text-white px-4 py-2 rounded-full font-bold" aria-label="Ver carrito">🛒 <span id="cartCount" class="bg-[#6B4423] px-2 py-0.5 rounded-full text-sm">0</span></button>
-</div>
-</div>
-<!-- Menú para celular -->
-<div class="md:hidden px-4 pb-3">
-<div class="flex justify-between font-semibold text-[#6B4423] text-sm mb-3">
-<a href="#" onclick="showSection('home');return false">Inicio</a>
-<a href="#" onclick="showSection('catalog');return false">Tienda</a>
-<a href="#" onclick="showSection('about');return false">Nosotros</a>
-<a href="#" onclick="showSection('contact');return false">Contacto</a>
-</div>
-<input type="text" id="searchInputMobile" placeholder="Buscar productos..." class="w-full px-4 py-2 border border-gray-300 rounded-full text-sm">
-</div>
-</nav>
+<a class="skip" id="skipLink" href="#">Saltar al contenido</a>
 
-<a href="https://wa.me/56966467293" target="_blank" rel="noopener noreferrer" aria-label="Escríbenos por WhatsApp" class="fixed bottom-6 right-6 bg-green-500 text-white p-4 rounded-full shadow-lg z-40">💬</a>
+<div class="consent" id="consent" role="region" aria-labelledby="consentTitle" hidden>
+  <div class="wrap consent-inner">
+    <div>
+      <h2 id="consentTitle">Tu privacidad en MimoPets</h2>
+      <p>Guardamos en tu dispositivo tu carrito y esta elección, porque el sitio los necesita para funcionar. Además, puedes permitir que carguemos la tipografía Nunito desde Google Fonts; al hacerlo, Google recibe tu dirección IP. No usamos analítica ni publicidad. Más detalle en la <a href="#cookies">Política de Cookies</a>.</p>
+    </div>
+    <fieldset id="consentPrefs" hidden>
+      <legend>Opciones</legend>
+      <div class="check"><input type="checkbox" id="optNecessary" checked disabled><label for="optNecessary"><strong>Necesarias</strong>: carrito y registro de tu elección. Siempre activas.</label></div>
+      <div class="check" style="margin-top:.6rem"><input type="checkbox" id="optFonts"><label for="optFonts"><strong>Tipografía de Google Fonts</strong>: carga Nunito desde servidores de Google. Desactivada por defecto.</label></div>
+    </fieldset>
+    <div class="consent-actions">
+      <button type="button" class="btn btn-ink" id="cReject">Rechazar opcionales</button>
+      <button type="button" class="btn btn-ink" id="cAccept">Aceptar opcionales</button>
+      <button type="button" class="btn btn-ghost" id="cConfig" aria-expanded="false" aria-controls="consentPrefs">Configurar</button>
+      <button type="button" class="btn btn-outline" id="cSave" hidden>Guardar mi elección</button>
+    </div>
+  </div>
+</div>
 
-<main id="app" class="min-h-screen">
-<section id="home">
-<div class="bg-gradient-to-r from-[#FFF8F3] via-[#FFE5D9] to-[#FFD4C2] py-20 px-4">
-<div class="max-w-6xl mx-auto text-center">
-<h1 class="text-4xl md:text-6xl font-black text-[#6B4423] mb-4">Lo mejor para tu mascota</h1>
-<p class="text-lg md:text-xl text-gray-700 mb-8">Accesorios premium seleccionados con amor para tus peludos</p>
-<button onclick="showSection('catalog')" class="btn-primary text-white px-10 py-4 rounded-full font-bold text-lg">Ver Catálogo</button>
-</div></div>
-<div class="max-w-6xl mx-auto px-4 py-16">
-<h2 class="text-3xl md:text-4xl font-bold text-[#6B4423] mb-12 text-center">Productos Destacados</h2>
-<div id="featuredGrid" class="grid grid-cols-1 md:grid-cols-3 gap-8"></div></div>
-<div class="bg-[#FFE5D9] py-16 px-4"><div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
-<div class="text-center"><div class="text-5xl mb-4">🚚</div><h3 class="font-bold text-[#6B4423] mb-2">Envío Rápido</h3><p class="text-gray-700">Llegamos a todo Chile en 3-5 días hábiles</p></div>
-<div class="text-center"><div class="text-5xl mb-4">✅</div><h3 class="font-bold text-[#6B4423] mb-2">Productos Verificados</h3><p class="text-gray-700">Solo seleccionamos lo mejor para tus mascotas</p></div>
-<div class="text-center"><div class="text-5xl mb-4">💳</div><h3 class="font-bold text-[#6B4423] mb-2">Pago Seguro</h3><p class="text-gray-700">Pago seguro mediante Flow</p></div>
-</div></div>
+<header class="site-header">
+  <div class="wrap header-row">
+    <a class="logo" href="#inicio" aria-label="MimoPets, ir al inicio">Mimo<span>Pets</span></a>
+    <nav class="nav" aria-label="Principal">
+      <a href="#inicio">Inicio</a>
+      <a href="#tienda">Tienda</a>
+      <a href="#nosotros">Nosotros</a>
+      <a href="#contacto">Contacto</a>
+    </nav>
+    <a class="btn btn-primary cart-btn" id="cartLink" href="#carrito">Carrito <span class="count" id="cartCount">0</span></a>
+  </div>
+</header>
+
+<a class="wa" href="https://wa.me/56966467293" target="_blank" rel="noopener noreferrer" aria-label="Escribir por WhatsApp (se abre en una pestaña nueva)">WhatsApp</a>
+<div class="toast" id="toast" role="status" hidden></div>
+<div class="sr-only" id="live" role="status" aria-live="polite"></div>
+
+<div class="wrap" id="payNoticeWrap" style="padding-top:1rem" hidden><p class="notice" id="payNotice" role="status"></p></div>
+
+<main id="main" tabindex="-1">
+
+<section data-route="inicio" hidden>
+  <div class="hero">
+    <div class="wrap">
+      <h1 tabindex="-1">Accesorios para perros y gatos</h1>
+      <p>Aseo, juguetes, ropa y snacks para tu mascota. Compras en línea y pagas en Flow.</p>
+      <a class="btn btn-primary" href="#tienda">Ver la tienda</a>
+    </div>
+  </div>
+  <div class="wrap page">
+    <h2 class="section-title">Productos destacados</h2>
+    <div class="grid" id="featuredGrid"></div>
+  </div>
+  <div class="info-band">
+    <div class="wrap info-grid">
+      <div><h3>Precio final claro</h3><p>Los precios incluyen IVA y el envío a Chile es gratis. El total que ves en el carrito es lo que pagas, sin cargos adicionales.</p></div>
+      <div><h3>Pago en Flow</h3><p>Pagas en la página de Flow. MimoPets no recibe ni guarda los datos de tu tarjeta.</p></div>
+      <div><h3>Retracto y garantía</h3><p>Tienes 10 días para arrepentirte de tu compra y 6 meses de garantía legal en productos nuevos. <a href="#reembolsos">Ver condiciones</a>.</p></div>
+    </div>
+  </div>
 </section>
 
-<section id="catalog" class="hidden py-16 px-4"><div class="max-w-6xl mx-auto">
-<h2 class="text-3xl md:text-4xl font-bold text-[#6B4423] mb-8">Nuestro Catálogo</h2>
-<div class="flex gap-3 mb-8 flex-wrap" id="filterButtons">
-<button data-filter="all" onclick="filterProducts('all')" class="filter-btn px-6 py-2 rounded-full font-semibold">Todos</button>
-<button data-filter="aseo" onclick="filterProducts('aseo')" class="filter-btn px-6 py-2 rounded-full font-semibold">Aseo</button>
-<button data-filter="juguetes" onclick="filterProducts('juguetes')" class="filter-btn px-6 py-2 rounded-full font-semibold">Juguetes</button>
-<button data-filter="ropa" onclick="filterProducts('ropa')" class="filter-btn px-6 py-2 rounded-full font-semibold">Ropa</button>
-<button data-filter="alimentacion" onclick="filterProducts('alimentacion')" class="filter-btn px-6 py-2 rounded-full font-semibold">Alimentación</button>
-</div>
-<div id="productsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"></div>
-</div></section>
+<section data-route="tienda" hidden>
+  <div class="wrap page">
+    <h1 tabindex="-1">Tienda</h1>
+    <div class="toolbar">
+      <div class="field" style="flex:1 1 16rem;max-width:24rem">
+        <label for="searchInput">Buscar productos</label>
+        <input class="input" type="search" id="searchInput" autocomplete="off">
+      </div>
+      <div class="pills" role="group" aria-label="Filtrar por categoría" id="pills">
+        <button type="button" class="pill" data-cat="all" aria-pressed="true">Todos</button>
+        <button type="button" class="pill" data-cat="aseo" aria-pressed="false">Aseo</button>
+        <button type="button" class="pill" data-cat="juguetes" aria-pressed="false">Juguetes</button>
+        <button type="button" class="pill" data-cat="ropa" aria-pressed="false">Ropa</button>
+        <button type="button" class="pill" data-cat="alimentacion" aria-pressed="false">Alimentación</button>
+      </div>
+    </div>
+    <p class="hint" id="resultCount" role="status" aria-live="polite"></p>
+    <div class="grid" id="productsGrid"></div>
+    <p class="hint" style="margin-top:1.5rem">Precios en pesos chilenos con IVA incluido. Envío gratis a Chile.</p>
+  </div>
+</section>
 
-<section id="cart" class="hidden py-16 px-4"><div class="max-w-4xl mx-auto">
-<h2 class="text-3xl md:text-4xl font-bold text-[#6B4423] mb-8">Tu Carrito</h2>
-<div id="cartItemsContainer" class="bg-white rounded-2xl p-4 md:p-8 shadow-lg mb-8"><div id="cartItems"></div></div>
-<div class="bg-white rounded-2xl p-8 shadow-lg">
-<div class="border-t-2 border-gray-200 pt-6">
-<div class="flex justify-between items-center mb-4"><span class="text-lg font-semibold text-gray-700">Subtotal:</span><span id="subtotal" class="text-xl font-bold text-[#6B4423]">$0</span></div>
-<div class="flex justify-between items-center mb-6"><span class="text-lg font-semibold text-gray-700">Envío:</span><span class="text-xl font-bold text-[#FF6B5B]">Gratis</span></div>
-<div class="border-t-2 border-gray-200 pt-6 flex justify-between items-center mb-8"><span class="text-2xl font-bold text-[#6B4423]">Total:</span><span id="totalPrice" class="text-3xl font-black gradient-text">$0</span></div>
-<div class="mb-4">
-<input type="email" id="checkoutEmail" placeholder="Tu correo electrónico" autocomplete="email"
-class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-[#FF6B5B] outline-none"
-required>
-<p class="text-sm text-gray-500 mt-2">Lo usaremos para identificar tu pago.</p>
-</div>
-<button id="checkoutButton" onclick="checkout()" class="btn-primary w-full text-white py-4 rounded-full font-bold text-lg">Proceder al Pago</button>
-<button onclick="showSection('catalog')" class="w-full mt-4 border-2 border-[#FF6B5B] text-[#FF6B5B] py-4 rounded-full font-bold">Seguir Comprando</button>
-</div></div></div></section>
+<section data-route="carrito" hidden>
+  <div class="wrap page" style="max-width:52rem">
+    <h1 tabindex="-1" id="cartTitle">Tu carrito</h1>
+    <div class="panel" id="cartPanel">
+      <div id="cartItems"></div>
+    </div>
+    <div class="panel" id="checkoutPanel" style="margin-top:1.25rem">
+      <div class="totals">
+        <div><span>Subtotal</span><span id="subtotal">$0</span></div>
+        <div><span>Envío a Chile</span><span>Gratis</span></div>
+        <div class="grand"><span>Total (IVA incluido)</span><span id="totalPrice">$0</span></div>
+      </div>
+      <p class="notice"><strong>Derecho a retracto:</strong> puedes devolver tu compra dentro de 10 días desde que la recibes, sin dar explicaciones. <a href="#reembolsos">Ver condiciones y excepciones</a>.</p>
 
-<section id="about" class="hidden py-16 px-4"><div class="max-w-4xl mx-auto"><h2 class="text-3xl md:text-4xl font-bold text-[#6B4423] mb-8">Sobre MimoPets</h2><div class="bg-white rounded-2xl p-8 shadow-lg"><p class="text-gray-700 text-lg mb-6">En MimoPets creemos que nuestras mascotas merecen lo mejor. Somos una tienda especializada en accesorios premium para perros y gatos, seleccionados cuidadosamente para garantizar calidad y seguridad.</p><p class="text-gray-700 text-lg mb-6">Trabajamos directamente con proveedores verificados para ofrecerte productos auténticos a precios competitivos.</p><p class="text-gray-700 text-lg">Nuestro compromiso es brindarte la mejor experiencia de compra con envíos seguros y atención personalizada.</p></div></div></section>
+      <form id="checkoutForm" novalidate class="stack" style="margin-top:1.25rem">
+        <div class="field">
+          <label for="checkoutEmail">Correo electrónico</label>
+          <input class="input" type="email" id="checkoutEmail" autocomplete="email" aria-describedby="emailHelp emailErr" required>
+          <p class="hint" id="emailHelp">Lo usamos solo para identificar tu pago y avisarte sobre tu pedido. No te enviaremos publicidad.</p>
+          <p class="field-err" id="emailErr" hidden></p>
+        </div>
+        <div class="checks">
+          <div>
+            <div class="check"><input type="checkbox" id="chkTerms" aria-describedby="termsErr"><label for="chkTerms">He leído y acepto los <a href="#terminos">Términos y Condiciones</a> y la <a href="#reembolsos">Política de Reembolsos</a>.</label></div>
+            <p class="field-err" id="termsErr" hidden></p>
+          </div>
+          <div>
+            <div class="check"><input type="checkbox" id="chkAge" aria-describedby="ageErr"><label for="chkAge">Tengo 18 años o más. Si soy menor de edad, mi madre, padre o representante legal autoriza esta compra y el uso de mis datos.</label></div>
+            <p class="field-err" id="ageErr" hidden></p>
+          </div>
+        </div>
+        <p class="hint">Cómo tratamos tus datos está en la <a href="#privacidad">Política de Privacidad</a>. Al pagar, te llevamos a Flow.</p>
+        <p class="error" id="checkoutError" role="alert" hidden></p>
+        <div style="display:flex;flex-wrap:wrap;gap:.75rem">
+          <button type="submit" class="btn btn-primary" id="checkoutButton">Pagar con Flow</button>
+          <a class="btn btn-outline" href="#tienda">Seguir comprando</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
 
-<section id="contact" class="hidden py-16 px-4"><div class="max-w-4xl mx-auto"><h2 class="text-3xl md:text-4xl font-bold text-[#6B4423] mb-8">Contacto</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-<div class="bg-white rounded-2xl p-8 shadow-lg"><h3 class="text-2xl font-bold text-[#6B4423] mb-6">Envíanos un mensaje</h3><form id="contactForm"><input type="text" placeholder="Tu nombre" class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg mb-4" required><input type="email" placeholder="Tu email" class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg mb-4" required><textarea placeholder="Tu mensaje" rows="5" class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg mb-4" required></textarea><button type="submit" class="btn-primary w-full text-white py-3 rounded-lg font-bold">Enviar</button></form></div>
-<div class="bg-white rounded-2xl p-8 shadow-lg"><h3 class="text-2xl font-bold text-[#6B4423] mb-6">Información</h3><p class="font-bold text-[#6B4423]">📧 Email</p><p class="text-gray-700 mb-6">jourgermanuel@gmail.com</p><p class="font-bold text-[#6B4423]">📱 WhatsApp</p><p class="text-gray-700 mb-6"><a href="https://wa.me/56966467293" target="_blank" rel="noopener noreferrer">+56 9 6646 7293</a></p><p class="font-bold text-[#6B4423]">🇨🇱 Ubicación</p><p class="text-gray-700">Chile</p></div>
-</div></div></section>
+<section data-route="nosotros" hidden>
+  <div class="wrap page prose">
+    <h1 tabindex="-1">Sobre MimoPets</h1>
+    <p>MimoPets es una tienda en línea chilena de accesorios para perros y gatos: aseo, juguetes, ropa y snacks.</p>
+    <p>Si tienes dudas sobre un producto, medidas o uso, escríbenos antes de comprar desde la página de <a href="#contacto">Contacto</a>.</p>
+    <h2>Datos del proveedor</h2>
+    <p>Razón social: <span class="pendiente">completar</span><br>RUT: <span class="pendiente">completar</span><br>Domicilio: <span class="pendiente">completar</span><br>Correo: <span class="js-email"></span></p>
+  </div>
+</section>
+
+<section data-route="contacto" hidden>
+  <div class="wrap page">
+    <h1 tabindex="-1">Contacto</h1>
+    <div class="two">
+      <div class="panel">
+        <h2 style="font-size:1.4rem;margin-bottom:1rem">Envíanos un mensaje</h2>
+        <form id="contactForm" novalidate class="stack">
+          <div class="field"><label for="cName">Nombre</label><input class="input" id="cName" type="text" autocomplete="name" aria-describedby="cNameErr"><p class="field-err" id="cNameErr" hidden></p></div>
+          <div class="field"><label for="cEmail">Correo electrónico</label><input class="input" id="cEmail" type="email" autocomplete="email" aria-describedby="cEmailErr"><p class="field-err" id="cEmailErr" hidden></p></div>
+          <div class="field"><label for="cMsg">Mensaje</label><textarea class="input" id="cMsg" aria-describedby="cMsgErr"></textarea><p class="field-err" id="cMsgErr" hidden></p></div>
+          <div>
+            <div class="check"><input type="checkbox" id="cConsent" aria-describedby="cConsentErr"><label for="cConsent">Autorizo que MimoPets use mi nombre, correo y mensaje para responder esta consulta, según la <a href="#privacidad">Política de Privacidad</a>.</label></div>
+            <p class="field-err" id="cConsentErr" hidden></p>
+          </div>
+          <p class="hint">Al enviar, se abre tu programa de correo con el mensaje listo. El mensaje solo sale cuando tú lo envías desde ahí; este sitio no lo guarda.</p>
+          <p class="ok-msg" id="contactStatus" role="status" hidden></p>
+          <div><button type="submit" class="btn btn-primary">Preparar mensaje</button></div>
+        </form>
+      </div>
+      <div class="panel">
+        <h2 style="font-size:1.4rem;margin-bottom:1rem">Información</h2>
+        <p><strong>Correo</strong></p>
+        <p style="margin-bottom:1rem"><span class="js-email"></span></p>
+        <p><strong>WhatsApp</strong></p>
+        <p style="margin-bottom:1rem"><a href="https://wa.me/56966467293" target="_blank" rel="noopener noreferrer">+56 9 6646 7293<span class="sr-only"> (abre WhatsApp en una pestaña nueva)</span></a></p>
+        <p><strong>Ubicación</strong></p>
+        <p>Chile</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section data-route="privacidad" hidden>
+  <div class="wrap page prose">
+    <h1 tabindex="-1">Política de Privacidad</h1>
+    <p class="updated">Última actualización: 13 de noviembre de 2026</p>
+    <p>Esta política explica qué datos personales trata MimoPets, para qué y qué derechos tienes. Se redactó conforme a la Ley N° 19.628 y sus modificaciones (Ley N° 21.719).</p>
+
+    <h2>1. Responsable</h2>
+    <p>Responsable del tratamiento: <span class="pendiente">razón social</span>, RUT <span class="pendiente">completar</span>, domicilio <span class="pendiente">completar</span>. Contacto para temas de privacidad: <span class="js-email"></span>.</p>
+
+    <h2>2. Qué datos tratamos y para qué</h2>
+    <div class="tablewrap" role="region" aria-label="Tabla de datos tratados" tabindex="0">
+      <table>
+        <thead><tr><th>Cuándo</th><th>Datos</th><th>Finalidad</th><th>Base</th></tr></thead>
+        <tbody>
+          <tr><td>Al pagar</td><td>Correo electrónico, detalle de productos y monto</td><td>Identificar tu pago, procesarlo con Flow y avisarte sobre tu pedido</td><td>Ejecución del contrato de compra</td></tr>
+          <tr><td>Si te pedimos datos de despacho</td><td>Nombre, dirección y teléfono de entrega</td><td>Entregar tu pedido. No se usan para otra cosa</td><td>Ejecución del contrato de compra</td></tr>
+          <tr><td>Al escribirnos</td><td>Nombre, correo y mensaje</td><td>Responder tu consulta</td><td>Tu consentimiento</td></tr>
+          <tr><td>Al navegar</td><td>Carrito y tu elección sobre cookies, guardados en tu propio dispositivo</td><td>Que el sitio funcione y recuerde tu decisión</td><td>Necesario para el servicio</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>3. Lo que no hacemos</h2>
+    <ul>
+      <li>No usamos analítica, píxeles de seguimiento ni publicidad.</li>
+      <li>No vendemos ni cedemos tus datos para marketing de terceros.</li>
+      <li>No te enviamos boletines ni promociones. Si algún día los ofrecemos, será con una casilla aparte, sin marcar.</li>
+      <li>No pedimos RUT, fecha de nacimiento ni otros datos que no necesitemos para vender y entregar.</li>
+    </ul>
+
+    <h2>4. Con quién compartimos datos</h2>
+    <ul>
+      <li><strong>Flow</strong>, plataforma de pagos: recibe tu correo, el monto y la descripción del pedido. Los datos de tu tarjeta los ingresas directamente en Flow y MimoPets no los recibe.</li>
+      <li><strong>Render</strong>, proveedor donde funciona nuestro servidor de pagos: procesa esa información técnica para conectar con Flow. Sus servidores pueden estar fuera de Chile.</li>
+      <li><strong>WhatsApp (Meta)</strong>: si tocas el botón de WhatsApp o "Consultar", se abre WhatsApp con un mensaje que menciona el producto. Se envía solo si tú lo envías, y tu número queda en esa conversación.</li>
+      <li><strong>Empresa de transporte</strong>, solo si hay despacho: recibe los datos de entrega.</li>
+      <li>Autoridades, cuando una ley lo exija.</li>
+    </ul>
+
+    <h2>5. Cuánto tiempo guardamos los datos</h2>
+    <ul>
+      <li>Datos de compra: el tiempo que exijan las normas tributarias y de consumo (hasta 6 años).</li>
+      <li>Mensajes de contacto: hasta 12 meses desde nuestra última respuesta.</li>
+      <li>Carrito y preferencias: quedan en tu dispositivo hasta que los borres.</li>
+    </ul>
+
+    <h2>6. Tus derechos</h2>
+    <p>Puedes pedir acceso, rectificación, supresión, oposición, bloqueo y portabilidad de tus datos, y retirar un consentimiento cuando quieras. Escribe a <span class="js-email"></span> indicando qué derecho ejerces. Responderemos dentro de los plazos legales. Si no estás conforme, puedes reclamar ante la Agencia de Protección de Datos Personales.</p>
+
+    <h2>7. Menores de edad</h2>
+    <p>Este sitio es para personas de 18 años o más. Una persona menor de edad solo puede comprar con autorización de su madre, padre o representante legal, y así lo declara en el carrito. No recopilamos a sabiendas datos de menores sin esa autorización. Si crees que un menor nos envió datos sin autorización, escríbenos y los eliminaremos.</p>
+
+    <h2>8. Seguridad</h2>
+    <p>El sitio se sirve por HTTPS y el pago se hace en Flow. Aun así, ningún sistema es infalible. Si ocurriera una brecha que te afecte, te avisaremos como exige la ley.</p>
+
+    <h2>9. Cambios</h2>
+    <p>Si cambiamos esta política, actualizaremos la fecha de arriba y, si el cambio es importante, te lo avisaremos en el sitio.</p>
+  </div>
+</section>
+
+<section data-route="terminos" hidden>
+  <div class="wrap page prose">
+    <h1 tabindex="-1">Términos y Condiciones</h1>
+    <p class="updated">Última actualización: 13 de noviembre de 2026</p>
+
+    <h2>1. Quiénes somos</h2>
+    <p>El sitio MimoPets es operado por <span class="pendiente">razón social</span>, RUT <span class="pendiente">completar</span>, domicilio <span class="pendiente">completar</span>, correo <span class="js-email"></span>. Al comprar aceptas estos términos.</p>
+
+    <h2>2. Quién puede comprar</h2>
+    <p>Debes tener 18 años o más. Si eres menor, solo puedes comprar con autorización de tu madre, padre o representante legal, que declaras en el carrito.</p>
+
+    <h2>3. Productos y precios</h2>
+    <ul>
+      <li>Los precios están en pesos chilenos e incluyen IVA.</li>
+      <li>El envío a Chile no tiene costo. El total que ves en el carrito es el monto que pagas.</li>
+      <li>Las descripciones y fotografías son referenciales. Si detectamos un error de precio, te lo informaremos antes de cobrar y podrás confirmar o cancelar sin costo.</li>
+      <li>Los productos están sujetos a disponibilidad de stock.</li>
+    </ul>
+
+    <h2>4. Cómo se hace una compra</h2>
+    <p>Agregas productos al carrito, ingresas tu correo, aceptas estos términos y pagas en Flow. El contrato se forma cuando Flow confirma el pago. Te avisaremos por correo.</p>
+
+    <h2>5. Pago</h2>
+    <p>El pago se procesa en Flow con los medios que esa plataforma ofrezca. MimoPets no almacena datos de tarjetas. No cobramos comisiones adicionales por pagar.</p>
+
+    <h2>6. Entrega</h2>
+    <p>Despachamos dentro de Chile. El plazo estimado es de 3 a 5 días hábiles desde la confirmación del pago. Es una estimación, no una garantía, y puede variar por la zona o por la empresa de transporte. Si hay un retraso importante, te avisaremos.</p>
+
+    <h2>7. Retracto, garantía y devoluciones</h2>
+    <p>Aplican el derecho a retracto y la garantía legal descritos en la <a href="#reembolsos">Política de Reembolsos</a>.</p>
+
+    <h2>8. Uso responsable de los productos</h2>
+    <p>Usa los productos según las instrucciones del envase o del fabricante y supervisa el uso con tu mascota. Nuestras descripciones no reemplazan la opinión de un veterinario.</p>
+
+    <h2>9. Propiedad intelectual</h2>
+    <p>El nombre, logotipo y textos de MimoPets pertenecen a su titular. Los créditos y licencias de los recursos que usamos están en la página de <a href="#licencias">Licencias</a>.</p>
+
+    <h2>10. Reclamos</h2>
+    <p>Escríbenos a <span class="js-email"></span> y responderemos a la brevedad. También puedes acudir al <a href="https://www.sernac.cl" target="_blank" rel="noopener noreferrer">SERNAC</a>.</p>
+
+    <h2>11. Ley aplicable</h2>
+    <p>Estos términos se rigen por las leyes de Chile, en especial la Ley N° 19.496 sobre Protección de los Derechos de los Consumidores. Los conflictos se resuelven ante los tribunales competentes según esa ley.</p>
+
+    <h2>12. Cambios</h2>
+    <p>Podemos actualizar estos términos. Las compras ya realizadas se rigen por la versión vigente al momento de pagar.</p>
+  </div>
+</section>
+
+<section data-route="reembolsos" hidden>
+  <div class="wrap page prose">
+    <h1 tabindex="-1">Política de Reembolsos</h1>
+    <p class="updated">Última actualización: 13 de noviembre de 2026</p>
+
+    <h2>1. Derecho a retracto</h2>
+    <p>Como compras a distancia, puedes arrepentirte y devolver tu pedido sin dar explicaciones dentro de <strong>10 días contados desde que recibes el producto</strong>. Si no te enviamos por escrito la confirmación de las condiciones de tu compra, ese plazo se amplía a 90 días.</p>
+    <p>Para ejercerlo, escribe a <span class="js-email"></span> con tu número de pedido o el correo usado al pagar. Te indicaremos cómo devolver el producto. El producto debe estar sin uso y, en lo posible, en su embalaje original.</p>
+
+    <h2>2. Excepciones al retracto</h2>
+    <p>La ley y su reglamento excluyen el retracto en estos casos:</p>
+    <ul>
+      <li>Productos que ya no pueden devolverse en su estado original, por ejemplo usados o instalados más allá de su inspección.</li>
+      <li>Productos que se deterioran o vencen en menos de 10 días.</li>
+      <li>Productos hechos a medida según tus especificaciones.</li>
+      <li>Productos de uso personal o higiene cuyo sello se abrió después de la entrega.</li>
+    </ul>
+    <p>Si un producto del catálogo tuviera una excepción, lo indicaremos en su ficha antes de que lo agregues al carrito.</p>
+
+    <h2>3. Garantía legal</h2>
+    <p>Si un producto nuevo llega con falla, tienes <strong>6 meses desde la recepción</strong> para pedir, a tu elección, reparación, cambio o devolución de lo pagado. Escríbenos con tu número de pedido y, si puedes, una foto de la falla. La garantía no cubre daños causados por mal uso.</p>
+
+    <h2>4. Cómo devolvemos tu dinero</h2>
+    <ul>
+      <li>Devolvemos el monto pagado por el mismo medio de pago, a través de Flow, a la brevedad y como máximo dentro de 45 días desde que ejerces el derecho.</li>
+      <li>Costo del envío de devolución en retracto: <span class="pendiente">definir quién lo asume</span>.</li>
+      <li>En garantía legal por producto con falla, el costo de enviar el producto lo asumimos nosotros.</li>
+    </ul>
+
+    <h2>5. Producto equivocado o dañado en el transporte</h2>
+    <p>Avísanos dentro de los 10 días desde que lo recibes, con fotos. Lo cambiaremos o te devolveremos el dinero, sin costo para ti.</p>
+
+    <h2>6. Cancelar antes del despacho</h2>
+    <p>Si aún no despachamos tu pedido, puedes cancelarlo escribiéndonos y te devolvemos el total pagado.</p>
+
+    <h2>7. Más información</h2>
+    <p>Tus derechos como consumidor están en la Ley N° 19.496. Puedes consultar al <a href="https://www.sernac.cl" target="_blank" rel="noopener noreferrer">SERNAC</a>.</p>
+  </div>
+</section>
+
+<section data-route="cookies" hidden>
+  <div class="wrap page prose">
+    <h1 tabindex="-1">Política de Cookies</h1>
+    <p class="updated">Última actualización: 13 de noviembre de 2026</p>
+    <p>MimoPets no instala cookies de seguimiento. Para funcionar, el sitio guarda dos datos en el almacenamiento local de tu navegador. Opcionalmente, puede cargar la tipografía Nunito desde Google, solo si lo permites.</p>
+
+    <h2>Qué usamos</h2>
+    <div class="tablewrap" role="region" aria-label="Tabla de almacenamiento y terceros" tabindex="0">
+      <table>
+        <thead><tr><th>Nombre</th><th>Tipo</th><th>Para qué</th><th>Duración</th><th>Necesita tu permiso</th></tr></thead>
+        <tbody>
+          <tr><td><code>mimopets-cart</code></td><td>Almacenamiento local, propio</td><td>Guardar los productos de tu carrito</td><td>Hasta que lo vacíes o borres los datos del sitio</td><td>No</td></tr>
+          <tr><td><code>mimopets-consent</code></td><td>Almacenamiento local, propio</td><td>Recordar tu elección sobre esta página</td><td>12 meses</td><td>No</td></tr>
+          <tr><td>Google Fonts</td><td>Recurso de tercero</td><td>Mostrar la tipografía Nunito. Google recibe tu IP y datos del navegador</td><td>Según Google</td><td>Sí. Solo se carga si aceptas</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>Lo que no usamos</h2>
+    <p>No usamos cookies de analítica, de publicidad ni de redes sociales.</p>
+
+    <h2>Servicios que visitas por tu cuenta</h2>
+    <p>Al pagar, te llevamos al sitio de Flow, que puede usar sus propias cookies según su política. Al tocar el botón de WhatsApp o "Consultar", abres WhatsApp en otra pestaña con un mensaje que menciona el producto. Solo se envía si tú lo envías.</p>
+
+    <h2>Cambiar tu elección</h2>
+    <p>Puedes cambiarla cuando quieras con el botón "Preferencias de cookies" al final de cada página. También puedes borrar los datos del sitio desde la configuración de tu navegador.</p>
+    <p><button type="button" class="btn btn-outline js-open-consent">Preferencias de cookies</button></p>
+  </div>
+</section>
+
+<section data-route="licencias" hidden>
+  <div class="wrap page prose">
+    <h1 tabindex="-1">Licencias y créditos</h1>
+    <p class="updated">Última actualización: 13 de noviembre de 2026</p>
+    <p>Este es el registro de los recursos visuales y de código que usa el sitio.</p>
+    <div class="tablewrap" role="region" aria-label="Tabla de licencias" tabindex="0">
+      <table>
+        <thead><tr><th>Recurso</th><th>Origen</th><th>Licencia</th><th>Dónde se usa</th></tr></thead>
+        <tbody>
+          <tr><td>Tipografía Nunito</td><td>The Nunito Project Authors, vía Google Fonts</td><td>SIL Open Font License 1.1</td><td>Todo el sitio, solo si aceptas Google Fonts</td></tr>
+          <tr><td>Logotipo "MimoPets"</td><td>Texto compuesto por MimoPets</td><td>Propiedad de MimoPets</td><td>Cabecera y pie de página</td></tr>
+          <tr><td>Fotografías de productos</td><td>Archivos IMG_xxxx. Autor y origen: <span class="pendiente">completar (fotos propias de MimoPets o con permiso del proveedor)</span></td><td><span class="pendiente">completar</span></td><td>Fichas de producto y carrito</td></tr>
+          <tr><td>Marcas Flow y WhatsApp</td><td>Se nombran como referencia, sin usar sus logotipos</td><td>Marcas de sus titulares</td><td>Pago y contacto</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Cada fotografía nueva se registra aquí con su autor, origen y licencia, o se indica que es material propio.</p>
+  </div>
+</section>
+
 </main>
 
-<footer class="bg-[#6B4423] text-white py-12 px-4 mt-16"><div class="max-w-6xl mx-auto text-center"><h3 class="text-2xl font-black mb-4">Mimo<span class="text-[#FF6B5B]">Pets</span></h3><p class="text-gray-200">Accesorios premium para tu mascota con amor</p><p class="mt-8 text-gray-300">&copy; 2026 MimoPets. Todos los derechos reservados.</p></div></footer>
+<footer class="site-footer">
+  <div class="wrap">
+    <p style="font-size:1.5rem;font-weight:900">MimoPets</p>
+    <p class="small">Accesorios para perros y gatos. Chile.</p>
+    <nav class="footer-nav" aria-label="Información legal">
+      <a href="#privacidad">Privacidad</a>
+      <a href="#terminos">Términos y Condiciones</a>
+      <a href="#reembolsos">Reembolsos</a>
+      <a href="#cookies">Cookies</a>
+      <a href="#licencias">Licencias</a>
+      <a href="https://www.sernac.cl" target="_blank" rel="noopener noreferrer">SERNAC</a>
+      <button type="button" class="link-btn js-open-consent">Preferencias de cookies</button>
+    </nav>
+    <p class="small">&copy; 2026 MimoPets. Todos los derechos reservados.</p>
+  </div>
+</footer>
 
 <script>
-const BACKEND_URL = "https://mimopets-backend.onrender.com";
-const WHATSAPP_PHONE = "56966467293";
-const CART_KEY = "mimopets-cart";
+(function(){
+document.documentElement.lang='es';
 
-const products = [
-  {
-    id: 1,
-    name: "Cepillo de vapor",
-    price: 12990,
-    category: "aseo",
-    featured: true,
-    images: [
-      "images/Cepillo de vapor/IMG_3716.jpeg",
-      "images/Cepillo de vapor/IMG_3717.jpeg",
-      "images/Cepillo de vapor/IMG_3718.jpeg",
-      "images/Cepillo de vapor/IMG_3719.jpeg",
-      "images/Cepillo de vapor/IMG_3722.jpeg",
-      "images/Cepillo de vapor/IMG_3723.jpeg"
-    ]
-  },
-  {
-    id: 2,
-    name: "Collar ajustable",
-    price: 9990,
-    category: "ropa",
-    featured: true,
-    images: [
-      "images/Collar reflectante/IMG_3761.jpeg",
-      "images/Collar reflectante/IMG_3762.jpeg",
-      "images/Collar reflectante/IMG_3763.jpeg",
-      "images/Collar reflectante/IMG_3764.jpeg",
-      "images/Collar reflectante/IMG_3765.jpeg"
-    ]
-  },
-  {
-    id: 3,
-    name: "Juguete de pelota interactiva",
-    price: 11990,
-    category: "juguetes",
-    featured: true,
-    images: [
-      "images/Pelotas de juguete/IMG_3740.jpeg",
-      "images/Pelotas de juguete/IMG_3741.jpeg",
-      "images/Pelotas de juguete/IMG_3742.jpeg",
-      "images/Pelotas de juguete/IMG_3743.jpeg",
-      "images/Pelotas de juguete/IMG_3744.jpeg"
-    ]
-  },
-  {
-    id: 4,
-    name: "Juguete para morder",
-    price: 9990,
-    category: "juguetes",
-    featured: false,
-    images: [
-      "images/Pelota para perro/IMG_3745.jpeg",
-      "images/Pelota para perro/IMG_3746.jpeg",
-      "images/Pelota para perro/IMG_3747.jpeg",
-      "images/Pelota para perro/IMG_3748.jpeg",
-      "images/Pelota para perro/IMG_3749.jpeg",
-      "images/Pelota para perro/IMG_3750.jpeg"
-    ]
-  },
-  {
-    id: 5,
-    name: "Snacks naturales",
-    price: 13990,
-    category: "alimentacion",
-    featured: false,
-    images: [
-      "images/Premios para perro/IMG_3766.jpeg",
-      "images/Premios para perro/IMG_3767.jpeg",
-      "images/Premios para perro/IMG_3768.jpeg",
-      "images/Premios para perro/IMG_3769.jpeg",
-      "images/Premios para perro/IMG_3770.jpeg",
-      "images/Premios para perro/IMG_3772.jpeg",
-      "images/Premios para perro/IMG_3773.jpeg",
-      "images/Premios para perro/IMG_3774.jpeg",
-      "images/Premios para perro/IMG_3775.jpeg",
-      "images/Premios para perro/IMG_3776.jpeg"
-    ]
-  },
-  {
-    id: 6,
-    name: "Champú natural",
-    price: 8990,
-    category: "aseo",
-    featured: false,
-    images: ["images/Shampoo/IMG_3739.jpeg"]
-  },
-  {
-    id: 7,
-    name: "Suéter para perro",
-    price: 19990,
-    category: "ropa",
-    featured: false,
-    images: [
-      "images/Suéter para mascotas/IMG_3751.jpeg",
-      "images/Suéter para mascotas/IMG_3752.jpeg",
-      "images/Suéter para mascotas/IMG_3753.jpeg",
-      "images/Suéter para mascotas/IMG_3755.jpeg",
-      "images/Suéter para mascotas/IMG_3756.jpeg",
-      "images/Suéter para mascotas/IMG_3757.jpeg",
-      "images/Suéter para mascotas/IMG_3758.jpeg",
-      "images/Suéter para mascotas/IMG_3759.jpeg",
-      "images/Suéter para mascotas/IMG_3760.jpeg"
-    ]
-  },
-  {
-    id: 8,
-    name: "Kit grooming premium",
-    price: 19990,
-    category: "aseo",
-    featured: false,
-    images: [
-      "images/aseo-mascotas/IMG_3731.jpeg",
-      "images/aseo-mascotas/IMG_3732.jpeg",
-      "images/aseo-mascotas/IMG_3733.jpeg",
-      "images/aseo-mascotas/IMG_3734.jpeg",
-      "images/aseo-mascotas/IMG_3735.jpeg"
-    ]
-  }
+var CFG={
+  BACKEND_URL:"https://mimopets-backend.onrender.com",
+  WHATSAPP:"56966467293",
+  EMAIL:"jourgermanuel@gmail.com"
+};
+
+var PRODUCTS=[
+  {id:1,name:"Cepillo de vapor",price:12990,category:"aseo",featured:true,images:["images/Cepillo de vapor/IMG_3716.jpeg","images/Cepillo de vapor/IMG_3717.jpeg","images/Cepillo de vapor/IMG_3718.jpeg","images/Cepillo de vapor/IMG_3719.jpeg","images/Cepillo de vapor/IMG_3722.jpeg","images/Cepillo de vapor/IMG_3723.jpeg"],description:"Cepillo con función de vapor para el aseo del pelaje de tu mascota."},
+  {id:2,name:"Collar ajustable",price:9990,category:"ropa",featured:true,images:["images/Collar reflectante/IMG_3761.jpeg","images/Collar reflectante/IMG_3762.jpeg","images/Collar reflectante/IMG_3763.jpeg","images/Collar reflectante/IMG_3764.jpeg","images/Collar reflectante/IMG_3765.jpeg"],description:"Collar ajustable para perros y gatos."},
+  {id:3,name:"Juguete de pelota interactiva",price:11990,category:"juguetes",featured:true,images:["images/Pelotas de juguete/IMG_3740.jpeg","images/Pelotas de juguete/IMG_3741.jpeg","images/Pelotas de juguete/IMG_3742.jpeg","images/Pelotas de juguete/IMG_3743.jpeg","images/Pelotas de juguete/IMG_3744.jpeg"],description:"Pelota interactiva para jugar con tu mascota."},
+  {id:4,name:"Juguete para morder",price:9990,category:"juguetes",featured:false,images:["images/Pelota para perro/IMG_3745.jpeg","images/Pelota para perro/IMG_3746.jpeg","images/Pelota para perro/IMG_3747.jpeg","images/Pelota para perro/IMG_3748.jpeg","images/Pelota para perro/IMG_3749.jpeg","images/Pelota para perro/IMG_3750.jpeg"],description:"Juguete para morder. Supervisa siempre el juego."},
+  {id:5,name:"Snacks naturales",price:13990,category:"alimentacion",featured:false,images:["images/Premios para perro/IMG_3766.jpeg","images/Premios para perro/IMG_3767.jpeg","images/Premios para perro/IMG_3768.jpeg","images/Premios para perro/IMG_3769.jpeg","images/Premios para perro/IMG_3770.jpeg","images/Premios para perro/IMG_3772.jpeg","images/Premios para perro/IMG_3773.jpeg","images/Premios para perro/IMG_3774.jpeg","images/Premios para perro/IMG_3775.jpeg","images/Premios para perro/IMG_3776.jpeg"],description:"Snacks para mascotas. Revisa ingredientes y fecha de vencimiento en el envase."},
+  {id:6,name:"Champú natural",price:8990,category:"aseo",featured:false,images:["images/Shampoo/IMG_3739.jpeg"],description:"Champú para mascotas. Revisa ingredientes y modo de uso en la etiqueta."},
+  {id:7,name:"Suéter para perro",price:19990,category:"ropa",featured:false,images:["images/Suéter para mascotas/IMG_3751.jpeg","images/Suéter para mascotas/IMG_3752.jpeg","images/Suéter para mascotas/IMG_3753.jpeg","images/Suéter para mascotas/IMG_3755.jpeg","images/Suéter para mascotas/IMG_3756.jpeg","images/Suéter para mascotas/IMG_3757.jpeg","images/Suéter para mascotas/IMG_3758.jpeg","images/Suéter para mascotas/IMG_3759.jpeg","images/Suéter para mascotas/IMG_3760.jpeg"],description:"Suéter para perro. Compara las medidas de tu mascota antes de comprar."},
+  {id:8,name:"Kit grooming premium",price:19990,category:"aseo",featured:false,images:["images/aseo-mascotas/IMG_3731.jpeg","images/aseo-mascotas/IMG_3732.jpeg","images/aseo-mascotas/IMG_3733.jpeg","images/aseo-mascotas/IMG_3734.jpeg","images/aseo-mascotas/IMG_3735.jpeg"],description:"Set de herramientas para el aseo de tu mascota."}
 ];
 
-let cart = loadCart();
-let currentFilter = "all";
+var ROUTES=['inicio','tienda','carrito','nosotros','contacto','privacidad','terminos','reembolsos','cookies','licencias'];
+var TITLES={inicio:'Inicio',tienda:'Tienda',carrito:'Carrito',nosotros:'Nosotros',contacto:'Contacto',privacidad:'Política de Privacidad',terminos:'Términos y Condiciones',reembolsos:'Política de Reembolsos',cookies:'Política de Cookies',licencias:'Licencias y créditos'};
 
-/* ---------- Utilidades ---------- */
+function $(id){return document.getElementById(id)}
+function money(n){return '$'+Number(n).toLocaleString('es-CL')}
+function norm(s){return String(s).normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase()}
+function byId(id){for(var i=0;i<PRODUCTS.length;i++){if(PRODUCTS[i].id===id)return PRODUCTS[i]}return null}
 
-function escapeHTML(text) {
-  return String(text ?? "")
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#39;");
-}
+document.querySelectorAll('.js-email').forEach(function(el){el.textContent=CFG.EMAIL});
 
-function formatPrice(price) {
-  return Number(price || 0).toLocaleString("es-CL", {
-    style: "currency",
-    currency: "CLP",
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0
-  });
-}
-
-function showToast(message) {
-  let toast = document.getElementById("toast");
-
-  if (!toast) {
-    toast = document.createElement("div");
-    toast.id = "toast";
-    toast.setAttribute("role", "status");
-    toast.className =
-      "fixed top-4 left-1/2 -translate-x-1/2 z-[60] bg-[#6B4423] " +
-      "text-white px-5 py-3 rounded-full shadow-lg transition-opacity " +
-      "duration-300 opacity-0 pointer-events-none";
-    document.body.appendChild(toast);
+/* ---------- Carrito ---------- */
+var cart=[];
+try{
+  var raw=JSON.parse(localStorage.getItem('mimopets-cart')||'[]');
+  if(Array.isArray(raw)){
+    raw.forEach(function(r){
+      var id=Number(r&&r.id),q=Math.floor(Number(r&&r.quantity));
+      if(byId(id)&&q>0)cart.push({id:id,quantity:Math.min(q,99)});
+    });
   }
+}catch(e){cart=[]}
 
-  toast.textContent = message;
-  toast.classList.remove("opacity-0");
-
-  clearTimeout(showToast.timer);
-  showToast.timer = setTimeout(() => {
-    toast.classList.add("opacity-0");
-  }, 2000);
+function saveCart(){
+  try{localStorage.setItem('mimopets-cart',JSON.stringify(cart))}catch(e){}
+  var n=cart.reduce(function(a,i){return a+i.quantity},0);
+  $('cartCount').textContent=n;
+  $('cartLink').setAttribute('aria-label','Carrito, '+n+(n===1?' producto':' productos'));
 }
+function cartTotal(){return cart.reduce(function(a,i){return a+byId(i.id).price*i.quantity},0)}
 
-/* ---------- Carrito (persistencia segura) ---------- */
-
-function loadCart() {
-  try {
-    const saved = JSON.parse(localStorage.getItem(CART_KEY) || "[]");
-
-    if (!Array.isArray(saved)) return [];
-
-    // Se reconstruye con los datos del catálogo: el precio
-    // nunca se toma de lo que esté guardado en el navegador.
-    return saved
-      .map(item => {
-        const product = products.find(p => p.id === item.id);
-        const quantity = Number(item.quantity);
-
-        if (!product || !Number.isInteger(quantity) || quantity <= 0) {
-          return null;
-        }
-
-        return { ...product, quantity };
-      })
-      .filter(Boolean);
-  } catch (error) {
-    console.error("No se pudo cargar el carrito:", error);
-    return [];
-  }
+var toastTimer;
+function toast(msg){
+  var t=$('toast');t.textContent=msg;t.hidden=false;
+  clearTimeout(toastTimer);toastTimer=setTimeout(function(){t.hidden=true},4500);
 }
+function live(msg){$('live').textContent='';setTimeout(function(){$('live').textContent=msg},30)}
 
-function saveCart() {
-  try {
-    const minimal = cart.map(({ id, quantity }) => ({ id, quantity }));
-    localStorage.setItem(CART_KEY, JSON.stringify(minimal));
-  } catch (error) {
-    console.error("No se pudo guardar el carrito:", error);
-  }
-}
-
-function getCartTotal() {
-  return cart.reduce(
-    (sum, item) => sum + Number(item.price) * Number(item.quantity),
-    0
-  );
-}
-
-/* ---------- Pago exitoso ---------- */
-
-const paymentParams = new URLSearchParams(window.location.search);
-
-if (paymentParams.get("pago") === "ok") {
-  try {
-    localStorage.removeItem(CART_KEY);
-  } catch (error) {
-    console.error(error);
-  }
-
-  cart = [];
-  history.replaceState({}, "", window.location.pathname);
-
-  setTimeout(() => {
-    alert("¡Pago exitoso! Gracias por comprar en MimoPets 🐾");
-  }, 300);
-}
-
-/* ---------- Navegación ---------- */
-
-function showSection(id) {
-  document
-    .querySelectorAll("#app > section")
-    .forEach(section => section.classList.add("hidden"));
-
-  const section = document.getElementById(id);
-
-  if (!section) return;
-
-  section.classList.remove("hidden");
-
-  if (id === "catalog") renderProducts();
-  if (id === "cart") renderCart();
-
-  window.scrollTo({ top: 0, behavior: "smooth" });
+function addToCart(id){
+  var p=byId(id);if(!p)return;
+  var it=cart.filter(function(c){return c.id===id})[0];
+  if(it){it.quantity=Math.min(it.quantity+1,99)}else{cart.push({id:id,quantity:1})}
+  saveCart();
+  toast(p.name+' se agregó al carrito.');
 }
 
 /* ---------- Productos ---------- */
-
-function productCard(product) {
-  const image = (product.images || []).filter(Boolean)[0];
-
-  const imageHTML = image
-    ? `<img
-        src="${encodeURI(image)}"
-        alt="${escapeHTML(product.name)}"
-        class="absolute inset-0 w-full h-full object-cover"
-        loading="lazy"
-        onerror="this.style.display='none'"
-      >`
-    : "";
-
-  return `
-    <article class="card-product bg-white rounded-2xl shadow-md p-4">
-      <div class="relative w-full h-56 mb-4 rounded-xl overflow-hidden bg-[#FFE5D9] flex items-center justify-center text-5xl">
-        🐾
-        ${imageHTML}
-      </div>
-
-      <h3 class="text-xl font-bold text-[#6B4423] mb-2">
-        ${escapeHTML(product.name)}
-      </h3>
-
-      <p class="text-2xl font-black text-[#FF6B5B] mb-4">
-        ${formatPrice(product.price)}
-      </p>
-
-      <div class="flex gap-2">
-        <button
-          type="button"
-          onclick="addToCart(${product.id})"
-          class="flex-1 bg-[#FF6B5B] hover:bg-[#e95547] text-white py-2 rounded-full font-bold">
-          Agregar
-        </button>
-
-        <button
-          type="button"
-          onclick="consultarProducto(${product.id})"
-          class="flex-1 border-2 border-[#FF6B5B] text-[#FF6B5B] py-2 rounded-full font-bold">
-          Consultar
-        </button>
-      </div>
-    </article>
-  `;
+function card(p){
+  var img=(p.images||[]).filter(Boolean)[0];
+  var imageHTML=img?'<img src="'+encodeURI(img)+'" alt="'+p.name+'" loading="lazy" decoding="async">':'';
+  var msg=encodeURIComponent('Hola, quisiera consultar por el producto: '+p.name+'. ¿Está disponible?');
+  return '<article class="card"><div class="pic"><span class="ph" aria-hidden="true">Foto del producto</span>'+imageHTML+'</div><div class="body">'
+   +'<h3>'+p.name+'</h3><p class="desc">'+p.description+'</p>'
+   +'<p class="price">'+money(p.price)+'</p>'
+   +'<div class="actions"><button type="button" class="btn btn-primary" data-add="'+p.id+'" aria-label="Agregar '+p.name+' al carrito">Agregar</button>'
+   +'<a class="btn btn-outline" href="https://wa.me/'+CFG.WHATSAPP+'?text='+msg+'" target="_blank" rel="noopener noreferrer">Consultar<span class="sr-only"> por '+p.name+' en WhatsApp, se abre en una pestaña nueva</span></a></div>'
+   +'</div></article>';
 }
-
-function getSearchText() {
-  const desktop = document.getElementById("searchInput");
-  const mobile = document.getElementById("searchInputMobile");
-
-  return ((desktop?.value || mobile?.value || ""))
-    .toLowerCase()
-    .trim();
-}
-
-function renderProducts() {
-  const container = document.getElementById("productsGrid");
-
-  if (!container) return;
-
-  const searchText = getSearchText();
-
-  let filteredProducts = [...products];
-
-  if (currentFilter !== "all") {
-    filteredProducts = filteredProducts.filter(
-      product => product.category === currentFilter
-    );
-  }
-
-  if (searchText) {
-    filteredProducts = filteredProducts.filter(product =>
-      product.name.toLowerCase().includes(searchText)
-    );
-  }
-
-  container.innerHTML = filteredProducts.length
-    ? filteredProducts.map(productCard).join("")
-    : `
-      <p class="col-span-full text-center text-gray-500 text-lg py-12">
-        No se encontraron productos.
-      </p>
-    `;
-
-  updateFilterButtons();
-}
-
-function updateFilterButtons() {
-  document.querySelectorAll(".filter-btn").forEach(btn => {
-    const active = btn.dataset.filter === currentFilter;
-
-    btn.className =
-      "filter-btn px-6 py-2 rounded-full font-semibold border-2 border-[#FF6B5B] " +
-      (active ? "bg-[#FF6B5B] text-white" : "bg-white text-[#6B4423]");
+function renderFeatured(){$('featuredGrid').innerHTML=PRODUCTS.filter(function(p){return p.featured}).map(card).join('')}
+var filter='all',query='';
+function renderCatalog(){
+  var q=norm(query.trim());
+  var list=PRODUCTS.filter(function(p){
+    return (filter==='all'||p.category===filter)&&(!q||norm(p.name+' '+p.description).indexOf(q)>-1);
   });
+  $('productsGrid').innerHTML=list.map(card).join('');
+  $('resultCount').textContent=list.length?(list.length+(list.length===1?' producto':' productos')):'No encontramos productos con esos criterios.';
 }
-
-function renderFeaturedProducts() {
-  const container = document.getElementById("featuredGrid");
-
-  if (!container) return;
-
-  container.innerHTML = products
-    .filter(product => product.featured)
-    .map(productCard)
-    .join("");
-}
-
-function filterProducts(category) {
-  currentFilter = category;
-  renderProducts();
-}
-
-function searchProducts(event) {
-  // Mantiene sincronizados los dos buscadores (PC y celular)
-  const desktop = document.getElementById("searchInput");
-  const mobile = document.getElementById("searchInputMobile");
-
-  if (event?.target === desktop && mobile) mobile.value = desktop.value;
-  if (event?.target === mobile && desktop) desktop.value = mobile.value;
-
-  // Si el cliente escribe, lo llevamos a la tienda
-  const catalog = document.getElementById("catalog");
-
-  if (catalog && catalog.classList.contains("hidden") && getSearchText()) {
-    showSection("catalog");
-  } else {
-    renderProducts();
-  }
-}
-
-function consultarProducto(productId) {
-  const product = products.find(item => item.id === productId);
-
-  if (!product) return;
-
-  const message =
-    `Hola, quisiera consultar por el producto: ${product.name}. ` +
-    `¿Está disponible?`;
-
-  const url =
-    `https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(message)}`;
-
-  window.open(url, "_blank", "noopener,noreferrer");
-}
-
-/* ---------- Acciones del carrito ---------- */
-
-function addToCart(id) {
-  const product = products.find(item => item.id === id);
-
-  if (!product) return;
-
-  const existingProduct = cart.find(item => item.id === id);
-
-  if (existingProduct) {
-    existingProduct.quantity += 1;
-  } else {
-    cart.push({ ...product, quantity: 1 });
-  }
-
-  updateCart();
-  renderCart();
-
-  showToast(`✅ ${product.name} agregado al carrito`);
-}
-
-function removeFromCart(id) {
-  cart = cart.filter(product => product.id !== id);
-
-  updateCart();
-  renderCart();
-}
-
-function updateQuantity(id, quantity) {
-  const product = cart.find(item => item.id === id);
-
-  if (!product) return;
-
-  const newQuantity = Number(quantity);
-
-  if (!Number.isInteger(newQuantity) || newQuantity <= 0) {
-    removeFromCart(id);
-    return;
-  }
-
-  product.quantity = newQuantity;
-
-  updateCart();
-  renderCart();
-}
-
-function updateCart() {
-  saveCart();
-
-  const cartCount = document.getElementById("cartCount");
-
-  if (cartCount) {
-    const totalItems = cart.reduce(
-      (total, product) => total + Number(product.quantity || 0),
-      0
-    );
-
-    cartCount.textContent = totalItems;
-  }
-}
-
-function renderCart() {
-  const cartItems = document.getElementById("cartItems");
-  const subtotal = document.getElementById("subtotal");
-  const totalPrice = document.getElementById("totalPrice");
-
-  if (!cartItems) return;
-
-  if (!cart.length) {
-    cartItems.innerHTML = `
-      <p class="text-center text-gray-500 text-lg py-12">
-        Tu carrito está vacío
-      </p>
-    `;
-
-    if (subtotal) subtotal.textContent = formatPrice(0);
-    if (totalPrice) totalPrice.textContent = formatPrice(0);
-
-    return;
-  }
-
-  cartItems.innerHTML = cart
-    .map(product => {
-      const image = product.images?.[0] || "";
-
-      return `
-        <div class="flex flex-col md:flex-row items-center justify-between gap-4 p-4 md:p-6 border-b-2 border-gray-200">
-
-          <div class="flex items-center gap-4 flex-1 w-full">
-            <img
-              src="${encodeURI(image)}"
-              alt="${escapeHTML(product.name)}"
-              class="w-20 h-20 object-cover rounded-lg"
-              loading="lazy"
-              onerror="this.style.display='none'"
-            >
-
-            <div>
-              <h3 class="font-bold text-[#6B4423]">
-                ${escapeHTML(product.name)}
-              </h3>
-
-              <p class="text-gray-600">
-                ${formatPrice(product.price)} c/u
-              </p>
-            </div>
-          </div>
-
-          <div class="flex items-center gap-3 flex-wrap justify-center">
-
-            <button
-              type="button"
-              onclick="updateQuantity(${product.id}, ${product.quantity - 1})"
-              class="px-3 py-1 border-2 border-[#FF6B5B] text-[#FF6B5B] rounded font-bold"
-              aria-label="Disminuir cantidad de ${escapeHTML(product.name)}">
-              -
-            </button>
-
-            <span class="px-4 py-1 bg-gray-100 rounded font-bold">
-              ${product.quantity}
-            </span>
-
-            <button
-              type="button"
-              onclick="updateQuantity(${product.id}, ${product.quantity + 1})"
-              class="px-3 py-1 border-2 border-[#FF6B5B] text-[#FF6B5B] rounded font-bold"
-              aria-label="Aumentar cantidad de ${escapeHTML(product.name)}">
-              +
-            </button>
-
-            <span class="font-bold text-[#6B4423] min-w-28 text-right">
-              ${formatPrice(Number(product.price) * product.quantity)}
-            </span>
-
-            <button
-              type="button"
-              onclick="removeFromCart(${product.id})"
-              class="text-red-500 font-bold text-xl"
-              aria-label="Eliminar ${escapeHTML(product.name)}">
-              🗑️
-            </button>
-          </div>
-        </div>
-      `;
-    })
-    .join("");
-
-  const total = getCartTotal();
-
-  if (subtotal) subtotal.textContent = formatPrice(total);
-  if (totalPrice) totalPrice.textContent = formatPrice(total);
-}
-
-/* ---------- Pago con Flow ---------- */
-
-async function checkout() {
-  if (!cart.length) {
-    alert("Tu carrito está vacío");
-    return;
-  }
-
-  const emailInput = document.getElementById("checkoutEmail");
-  const button = document.getElementById("checkoutButton");
-
-  if (!emailInput || !emailInput.checkValidity()) {
-    alert("Ingresa un correo electrónico válido para continuar.");
-    emailInput?.focus();
-    return;
-  }
-
-  const email = emailInput.value.trim();
-  const total = getCartTotal();
-
-  const subject = `MimoPets - ${cart
-    .map(item => `${item.name} x${item.quantity}`)
-    .join(", ")}`;
-
-  if (button) {
-    button.disabled = true;
-    button.textContent = "Conectando con Flow...";
-  }
-
-  const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 30000);
-
-  try {
-    const response = await fetch(`${BACKEND_URL}/api/flow/create-order`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        email,
-        subject,
-        amount: Math.round(total)
-      }),
-      signal: controller.signal
-    });
-
-    const data = await response.json().catch(() => ({}));
-
-    if (!response.ok || !data.checkoutUrl) {
-      throw new Error(data.error || "No se pudo crear el pago");
-    }
-
-    window.location.href = data.checkoutUrl;
-  } catch (error) {
-    console.error("Error iniciando pago:", error);
-
-    alert(
-      error.name === "AbortError"
-        ? "El servidor tardó demasiado en responder. Intenta nuevamente."
-        : "No fue posible iniciar el pago. Intenta nuevamente."
-    );
-
-    if (button) {
-      button.disabled = false;
-      button.textContent = "Proceder al Pago";
-    }
-  } finally {
-    clearTimeout(timeoutId);
-  }
-}
-
-/* ---------- Inicio ---------- */
-
-document.addEventListener("DOMContentLoaded", () => {
-  renderFeaturedProducts();
-  renderProducts();
-  updateCart();
-  renderCart();
-
-  ["searchInput", "searchInputMobile"].forEach(id => {
-    const input = document.getElementById(id);
-
-    if (input) {
-      input.addEventListener("input", searchProducts);
-    }
-  });
-
-  const contactForm = document.getElementById("contactForm");
-
-  if (contactForm) {
-    contactForm.addEventListener("submit", event => {
-      event.preventDefault();
-
-      alert(
-        "✅ Mensaje enviado correctamente. " +
-        "Nos pondremos en contacto pronto."
-      );
-
-      contactForm.reset();
-    });
-  }
+document.addEventListener('click',function(e){
+  var b=e.target.closest('[data-add]');
+  if(b){addToCart(Number(b.getAttribute('data-add')))}
 });
+/* Si una foto no carga, se oculta y queda el fondo neutro */
+document.addEventListener('error',function(e){
+  var t=e.target;
+  if(t&&t.tagName==='IMG'){t.style.display='none'}
+},true);
+
+$('pills').addEventListener('click',function(e){
+  var b=e.target.closest('.pill');if(!b)return;
+  filter=b.getAttribute('data-cat');
+  this.querySelectorAll('.pill').forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false')});
+  renderCatalog();
+});
+$('searchInput').addEventListener('input',function(){query=this.value;renderCatalog()});
+
+/* ---------- Vista del carrito ---------- */
+function renderCart(){
+  var box=$('cartItems');
+  var empty=!cart.length;
+  $('checkoutPanel').hidden=empty;
+  if(empty){
+    box.innerHTML='<p class="empty">Tu carrito está vacío.</p><a class="btn btn-primary" href="#tienda">Ir a la tienda</a>';
+    return;
+  }
+  box.innerHTML='<ul class="cart-list">'+cart.map(function(i){
+    var p=byId(i.id);
+    return '<li class="cart-item"><span class="thumb">'+(p.images&&p.images[0]?'<img src="'+encodeURI(p.images[0])+'" alt="" loading="lazy">':'')+'</span>'
+     +'<div><h3>'+p.name+'</h3><p class="sub">'+money(p.price)+' c/u</p></div>'
+     +'<div class="ctrl"><div class="qty" role="group" aria-label="Cantidad de '+p.name+'">'
+     +'<button type="button" data-act="dec" data-id="'+p.id+'" aria-label="Quitar una unidad de '+p.name+'">−</button>'
+     +'<span class="n">'+i.quantity+'</span>'
+     +'<button type="button" data-act="inc" data-id="'+p.id+'" aria-label="Agregar una unidad de '+p.name+'">+</button></div>'
+     +'<button type="button" class="link-btn" data-act="rm" data-id="'+p.id+'">Quitar<span class="sr-only"> '+p.name+' del carrito</span></button>'
+     +'<span class="line-total">'+money(p.price*i.quantity)+'</span></div></li>';
+  }).join('')+'</ul>';
+  var t=cartTotal();
+  $('subtotal').textContent=money(t);
+  $('totalPrice').textContent=money(t);
+  $('checkoutButton').textContent='Pagar '+money(t)+' con Flow';
+}
+$('cartItems').addEventListener('click',function(e){
+  var b=e.target.closest('[data-act]');if(!b)return;
+  var id=Number(b.getAttribute('data-id')),act=b.getAttribute('data-act');
+  var it=cart.filter(function(c){return c.id===id})[0];if(!it)return;
+  var p=byId(id);
+  if(act==='inc'){it.quantity=Math.min(it.quantity+1,99)}
+  if(act==='dec'){it.quantity-=1}
+  if(act==='rm'||it.quantity<=0){
+    cart=cart.filter(function(c){return c.id!==id});
+    saveCart();renderCart();live(p.name+' se quitó del carrito.');
+    var h=$('cartTitle');if(h)h.focus();
+    return;
+  }
+  saveCart();renderCart();
+  live('Cantidad de '+p.name+': '+it.quantity+'.');
+  var again=document.querySelector('[data-act="'+act+'"][data-id="'+id+'"]');if(again)again.focus();
+});
+
+/* ---------- Errores de campo ---------- */
+function fieldErr(inputId,errId,msg){
+  var i=$(inputId),e=$(errId);
+  if(msg){e.textContent=msg;e.hidden=false;i.setAttribute('aria-invalid','true')}
+  else{e.hidden=true;e.textContent='';i.removeAttribute('aria-invalid')}
+  return !msg;
+}
+function focusFirst(ids){for(var k=0;k<ids.length;k++){if(ids[k]){$(ids[k]).focus();return}}}
+var EMAIL_RE=/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+/* ---------- Pago ---------- */
+$('checkoutForm').addEventListener('submit',function(ev){
+  ev.preventDefault();
+  var err=$('checkoutError');err.hidden=true;
+  if(!cart.length){err.textContent='Tu carrito está vacío.';err.hidden=false;return}
+  var email=$('checkoutEmail').value.trim();
+  var okEmail=fieldErr('checkoutEmail','emailErr',EMAIL_RE.test(email)?'':'Ingresa un correo electrónico válido, por ejemplo nombre@correo.cl.');
+  var okTerms=fieldErr('chkTerms','termsErr',$('chkTerms').checked?'':'Para continuar, acepta los Términos y la Política de Reembolsos.');
+  var okAge=fieldErr('chkAge','ageErr',$('chkAge').checked?'':'Para continuar, confirma tu edad o la autorización de tu madre, padre o representante.');
+  if(!(okEmail&&okTerms&&okAge)){focusFirst([!okEmail&&'checkoutEmail',!okTerms&&'chkTerms',!okAge&&'chkAge']);return}
+
+  var total=cartTotal();
+  var subject=('MimoPets - '+cart.map(function(i){return byId(i.id).name+' x'+i.quantity}).join(', ')).slice(0,250);
+  var btn=$('checkoutButton'),label=btn.textContent;
+  btn.disabled=true;btn.textContent='Conectando con Flow… puede tardar unos segundos';
+  var ctl=new AbortController(),to=setTimeout(function(){ctl.abort()},60000);
+  fetch(CFG.BACKEND_URL+'/api/flow/create-order',{
+    method:'POST',headers:{'Content-Type':'application/json'},signal:ctl.signal,
+    body:JSON.stringify({email:email,subject:subject,amount:total,items:cart.map(function(i){return{id:i.id,quantity:i.quantity}})})
+  }).then(function(r){return r.json().then(function(d){return{ok:r.ok,d:d}})})
+  .then(function(x){
+    clearTimeout(to);
+    if(!x.ok||!x.d.checkoutUrl)throw new Error('sin url');
+    window.location.href=x.d.checkoutUrl;
+  }).catch(function(){
+    clearTimeout(to);
+    err.textContent='No pudimos conectar con el servicio de pago. Tu carrito sigue guardado. Intenta de nuevo en unos minutos o escríbenos a '+CFG.EMAIL+'.';
+    err.hidden=false;btn.disabled=false;btn.textContent=label;
+  });
+});
+
+/* ---------- Contacto ---------- */
+$('contactForm').addEventListener('submit',function(ev){
+  ev.preventDefault();
+  var name=$('cName').value.trim(),email=$('cEmail').value.trim(),msg=$('cMsg').value.trim();
+  var a=fieldErr('cName','cNameErr',name?'':'Escribe tu nombre.');
+  var b=fieldErr('cEmail','cEmailErr',EMAIL_RE.test(email)?'':'Ingresa un correo electrónico válido.');
+  var c=fieldErr('cMsg','cMsgErr',msg?'':'Escribe tu mensaje.');
+  var d=fieldErr('cConsent','cConsentErr',$('cConsent').checked?'':'Para continuar, autoriza el uso de tus datos para responderte.');
+  var st=$('contactStatus');st.hidden=true;
+  if(!(a&&b&&c&&d)){focusFirst([!a&&'cName',!b&&'cEmail',!c&&'cMsg',!d&&'cConsent']);return}
+  var url='mailto:'+CFG.EMAIL+'?subject='+encodeURIComponent('Consulta desde MimoPets')+'&body='+encodeURIComponent(msg+'\n\n'+name+' ('+email+')');
+  st.textContent='Listo. Si tu programa de correo no se abrió, copia tu mensaje y envíalo a '+CFG.EMAIL+'.';
+  st.hidden=false;
+  try{window.location.href=url}catch(e){}
+});
+
+/* ---------- Consentimiento de cookies ---------- */
+var CKEY='mimopets-consent';
+function getConsent(){
+  try{var c=JSON.parse(localStorage.getItem(CKEY));if(c&&c.v===1&&Date.now()-c.ts<31536000000)return c}catch(e){}
+  return null;
+}
+function applyConsent(fonts){
+  var l=$('gfLink');
+  if(fonts&&!l){
+    l=document.createElement('link');l.id='gfLink';l.rel='stylesheet';
+    l.href='https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap';
+    document.head.appendChild(l);
+  }else if(!fonts&&l){l.remove()}
+}
+function setBannerHeight(){
+  var b=$('consent');
+  document.documentElement.style.setProperty('--banner-h',b.hidden?'0px':b.offsetHeight+'px');
+}
+function openConsent(showPrefs){
+  var cur=getConsent();
+  $('optFonts').checked=!!(cur&&cur.fonts);
+  $('consent').hidden=false;
+  setPrefs(!!showPrefs);
+  setBannerHeight();
+}
+function setPrefs(open){
+  $('consentPrefs').hidden=!open;
+  $('cSave').hidden=!open;
+  $('cConfig').setAttribute('aria-expanded',open?'true':'false');
+  $('cConfig').textContent=open?'Ocultar opciones':'Configurar';
+  setBannerHeight();
+}
+function saveConsent(fonts){
+  try{localStorage.setItem(CKEY,JSON.stringify({v:1,fonts:fonts,ts:Date.now()}))}catch(e){}
+  applyConsent(fonts);
+  $('consent').hidden=true;setBannerHeight();
+  live(fonts?'Preferencias guardadas: fuentes de Google activadas.':'Preferencias guardadas: solo almacenamiento necesario.');
+}
+$('cAccept').addEventListener('click',function(){saveConsent(true)});
+$('cReject').addEventListener('click',function(){saveConsent(false)});
+$('cSave').addEventListener('click',function(){saveConsent($('optFonts').checked)});
+$('cConfig').addEventListener('click',function(){setPrefs($('consentPrefs').hidden)});
+document.querySelectorAll('.js-open-consent').forEach(function(b){b.addEventListener('click',function(){openConsent(true);$('optFonts').focus()})});
+window.addEventListener('resize',setBannerHeight);
+
+var saved=getConsent();
+if(saved){applyConsent(saved.fonts)}else{openConsent(false)}
+
+/* ---------- Rutas ---------- */
+var first=true;
+function route(){
+  var name=location.hash.replace('#','');
+  if(ROUTES.indexOf(name)<0)name='inicio';
+  document.querySelectorAll('[data-route]').forEach(function(s){s.hidden=s.getAttribute('data-route')!==name});
+  document.querySelectorAll('.nav a').forEach(function(a){
+    if(a.getAttribute('href')==='#'+name)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');
+  });
+  document.title=TITLES[name]+' | MimoPets';
+  if(name==='tienda')renderCatalog();
+  if(name==='carrito')renderCart();
+  window.scrollTo(0,0);
+  if(!first){var h=document.querySelector('[data-route="'+name+'"] h1');if(h)h.focus({preventScroll:true})}
+  first=false;
+}
+window.addEventListener('hashchange',route);
+$('skipLink').addEventListener('click',function(e){e.preventDefault();$('main').focus()});
+
+try{
+  if(new URLSearchParams(window.location.search).get('pago')==='ok'){
+    cart=[];
+    $('payNotice').textContent='Volviste desde Flow. Si tu pago fue aprobado, te avisaremos por correo. Gracias por comprar en MimoPets.';
+    $('payNoticeWrap').hidden=false;
+    history.replaceState({},'',window.location.pathname+window.location.hash);
+  }
+}catch(e){}
+
+renderFeatured();saveCart();route();
+})();
 </script>
 </body>
 </html>
